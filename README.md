@@ -86,6 +86,20 @@ All map spots live in the `LOCATIONS` array inside [`index.html`](./index.html) 
 
 ---
 
+## ☕ Buy Me a Coffee — Support the Project
+
+If you enjoy ViceRoute and want to support continued development, consider donating!
+
+| Method | Details |
+| :---: | :--- |
+| **₿ Bitcoin (BTC)** | `158eVVqFPqyWCcfdKtYSNGpBKXmaY2jNF5` |
+| **💲 USDT (ERC-20)** | `0xce3a9a2a2680f19659f7dfa46067b94454e51b63` |
+| **🅿️ PayPal** | [![Donate Now](https://img.shields.io/badge/PayPal-Donate_Now-00457C?style=for-the-badge&logo=paypal&logoColor=white)](https://www.paypal.com/paypalme/sydtekstore) |
+
+> Every contribution, no matter how small, helps keep this project alive and growing. Thank you! 🙏
+
+---
+
 ## 📄 License
 
 Open-source community project released under the **MIT License**. Built for the GTA 6 player community by [**lociAI**](https://github.com/lociAI).
