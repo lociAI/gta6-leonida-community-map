@@ -91,6 +91,13 @@
       background: #070412 !important;
       font-family: 'Inter', sans-serif;
     }
+    .leaflet-image-layer {
+      image-rendering: -webkit-optimize-contrast;
+      image-rendering: high-quality;
+    }
+    .map-photo-hd-filter {
+      filter: contrast(1.08) saturate(1.16) brightness(1.03);
+    }
     .neon-border-pink {
       box-shadow: 0 0 22px rgba(255, 42, 133, 0.55), inset 0 0 10px rgba(255, 42, 133, 0.2);
       border-color: rgba(255, 42, 133, 0.9);
@@ -1197,45 +1204,78 @@
       // Y-coordinates go 2000 (top) to 0 (bottom). Every path below is traced directly
       // from leonida-map.jpg (svgY = 2000 - leafletY).
       const c = isRetro ? {
-        tintFill: "rgba(18, 4, 40, 0.36)",
+        tintFill: "rgba(18, 4, 40, 0.34)",
         coastStroke: "#00f0ff",
         beachStroke: "#ff2a85",
         highwayOuter: "#ff2a85",
         highwayInner: "#fde047",
-        secondaryRoad: "rgba(0, 240, 255, 0.55)",
+        secondaryRoad: "rgba(0, 240, 255, 0.65)",
+        localStreet: "rgba(255, 42, 133, 0.38)",
+        buildingFill: "rgba(0, 240, 255, 0.14)",
+        buildingStroke: "rgba(0, 240, 255, 0.6)",
         gridLine: "rgba(255, 42, 133, 0.14)",
         landFillOpacity: "0.18"
       } : isSat ? {
         tintFill: "rgba(4, 16, 34, 0.0)",
-        coastStroke: "rgba(0, 240, 255, 0.35)",
-        beachStroke: "rgba(253, 224, 71, 0.4)",
-        highwayOuter: "rgba(245, 158, 11, 0.7)",
-        highwayInner: "rgba(253, 224, 71, 0.85)",
-        secondaryRoad: "rgba(226, 232, 240, 0.4)",
+        coastStroke: "rgba(0, 240, 255, 0.45)",
+        beachStroke: "rgba(253, 224, 71, 0.5)",
+        highwayOuter: "rgba(245, 158, 11, 0.78)",
+        highwayInner: "rgba(253, 224, 71, 0.92)",
+        secondaryRoad: "rgba(226, 232, 240, 0.55)",
+        localStreet: "rgba(255, 255, 255, 0.32)",
+        buildingFill: "rgba(255, 255, 255, 0.12)",
+        buildingStroke: "rgba(253, 224, 71, 0.55)",
         gridLine: "rgba(0, 240, 255, 0.06)",
         landFillOpacity: "0.0"
       } : {
-        tintFill: "rgba(3, 10, 24, 0.62)",
+        tintFill: "rgba(3, 10, 24, 0.64)",
         coastStroke: "#00f0ff",
         beachStroke: "#ff2a85",
         highwayOuter: "#ff2a85",
         highwayInner: "#00f0ff",
-        secondaryRoad: "rgba(0, 240, 255, 0.5)",
-        gridLine: "rgba(0, 240, 255, 0.14)",
+        secondaryRoad: "rgba(0, 240, 255, 0.65)",
+        localStreet: "rgba(0, 240, 255, 0.38)",
+        buildingFill: "rgba(0, 240, 255, 0.16)",
+        buildingStroke: "#00f0ff",
+        gridLine: "rgba(0, 240, 255, 0.15)",
         landFillOpacity: "0.28"
       };
 
       const svg = `
-      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 2000 2000" width="2000" height="2000">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 2000 2000" width="4000" height="4000" shape-rendering="geometricPrecision" text-rendering="geometricPrecision">
         <defs>
           <pattern id="coordGrid" width="100" height="100" patternUnits="userSpaceOnUse">
-            <path d="M 100 0 L 0 0 0 100" fill="none" stroke="${c.gridLine}" stroke-width="1.3"/>
+            <path d="M 100 0 L 0 0 0 100" fill="none" stroke="${c.gridLine}" stroke-width="1.2"/>
             <path d="M 50 0 L 50 100 M 0 50 L 100 50" fill="none" stroke="${c.gridLine}" stroke-width="0.6" stroke-dasharray="4,4"/>
+            <path d="M 25 0 L 25 100 M 75 0 L 75 100 M 0 25 L 100 25 M 0 75 L 100 75" fill="none" stroke="${c.gridLine}" stroke-width="0.3" stroke-dasharray="2,3"/>
           </pattern>
+          <pattern id="urbanBlockGrid" width="16" height="22" patternUnits="userSpaceOnUse">
+            <path d="M 16 0 L 0 0 0 22" fill="none" stroke="${c.localStreet}" stroke-width="0.9"/>
+            <rect x="2.5" y="2.5" width="11" height="17" fill="${c.buildingFill}" stroke="${c.buildingStroke}" stroke-width="0.4" rx="1"/>
+          </pattern>
+          <pattern id="swampMarshPattern" width="35" height="35" patternUnits="userSpaceOnUse">
+            <circle cx="10" cy="10" r="1.5" fill="rgba(52, 211, 153, 0.35)"/>
+            <circle cx="26" cy="22" r="2" fill="rgba(52, 211, 153, 0.28)"/>
+            <path d="M 4,28 Q 15,23 28,29" fill="none" stroke="rgba(52, 211, 153, 0.25)" stroke-width="0.8" stroke-dasharray="3,2"/>
+          </pattern>
+          <filter id="neonGlow" x="-20%" y="-20%" width="140%" height="140%">
+            <feGaussianBlur stdDeviation="2.2" result="blur"/>
+            <feMerge>
+              <feMergeNode in="blur"/>
+              <feMergeNode in="SourceGraphic"/>
+            </feMerge>
+          </filter>
         </defs>
 
         <!-- Theme Tint Layer over leonida-map.jpg -->
         <rect width="2000" height="2000" fill="${c.tintFill}"/>
+
+        <!-- 0. BATHYMETRIC OCEAN CONTOURS & SHALLOW REEF SANDBARS -->
+        <g fill="none" stroke="${c.coastStroke}" stroke-opacity="0.22" stroke-width="1" stroke-dasharray="6,6">
+          <path d="M 1585,820 Q 1700,950 1695,1245 Q 1630,1360 1495,1375"/>
+          <path d="M 1185,1675 Q 1120,1815 885,1860 Q 645,1850 320,1965"/>
+          <path d="M 245,465 Q 260,310 465,220 L 715,120 L 970,80"/>
+        </g>
 
         <!-- 1. EXACT TRACED MAINLAND LEONIDA ISLAND OUTLINE (Matches leonida-map.jpg 1:1) -->
         <path d="M 1055,45
@@ -1264,84 +1304,243 @@
                  L 725,145
                  L 965,105 Z"
               fill="#1e1035" fill-opacity="${c.landFillOpacity}"
-              stroke="${c.coastStroke}" stroke-width="${isSat ? '2' : '3.5'}" stroke-opacity="0.85"/>
+              stroke="${c.coastStroke}" stroke-width="${isSat ? '2' : '3.2'}" stroke-opacity="0.9"/>
 
-        <!-- 2. LAKE LEONIDA (Central-East Lagoon at svgY=675, leafletY=1325) -->
+        <!-- 1B. TOPOGRAPHIC CONTOUR RINGS (MT. KALAGA & CENTRAL RIDGES) -->
+        <g fill="none" stroke="rgba(134, 239, 172, 0.32)" stroke-width="1.1" stroke-dasharray="5,3">
+          <ellipse cx="660" cy="485" rx="195" ry="130"/>
+          <ellipse cx="665" cy="480" rx="145" ry="92"/>
+          <ellipse cx="672" cy="475" rx="95" ry="58"/>
+          <ellipse cx="680" cy="470" rx="48" ry="28" stroke="rgba(134, 239, 172, 0.55)" stroke-dasharray="none"/>
+          <!-- Ambrosia Rolling Hills & Sugar Fields -->
+          <rect x="770" y="790" width="210" height="165" rx="14" stroke="rgba(249, 115, 22, 0.28)" stroke-dasharray="4,4"/>
+          <line x1="770" y1="845" x2="980" y2="845" stroke="rgba(249, 115, 22, 0.2)"/>
+          <line x1="770" y1="900" x2="980" y2="900" stroke="rgba(249, 115, 22, 0.2)"/>
+          <line x1="840" y1="790" x2="840" y2="955" stroke="rgba(249, 115, 22, 0.2)"/>
+          <line x1="910" y1="790" x2="910" y2="955" stroke="rgba(249, 115, 22, 0.2)"/>
+        </g>
+
+        <!-- 1C. GRASSRIVERS EVERGLADES WETLAND CHANNELS & MARSH TEXTURE -->
+        <ellipse cx="970" cy="1495" rx="145" ry="120" fill="url(#swampMarshPattern)"/>
+        <g fill="none" stroke="rgba(52, 211, 153, 0.42)" stroke-width="1.4" stroke-linecap="round">
+          <path d="M 885,1445 Q 945,1480 965,1545 T 1045,1610"/>
+          <path d="M 915,1555 Q 975,1510 1055,1485"/>
+          <path d="M 870,1505 Q 940,1525 995,1445"/>
+          <path d="M 955,1415 Q 985,1495 940,1595"/>
+        </g>
+
+        <!-- 2. LAKE LEONIDA & INLAND CANAL NETWORK (svgY=675, leafletY=1325) -->
         <ellipse cx="1205" cy="675" rx="95" ry="92"
-                 fill="rgba(4, 18, 42, 0.35)" stroke="${c.coastStroke}" stroke-width="2.5" stroke-dasharray="${isSat ? 'none' : '6,4'}"/>
+                 fill="rgba(4, 18, 42, 0.38)" stroke="${c.coastStroke}" stroke-width="2.5"/>
+        <ellipse cx="1205" cy="675" rx="74" ry="70"
+                 fill="none" stroke="${c.coastStroke}" stroke-width="0.9" stroke-opacity="0.4" stroke-dasharray="4,4"/>
+        <!-- Lake Leonida Spillway Canals to Vice City & West Coast -->
+        <path d="M 1205,767 L 1200,855 L 1265,945" fill="none" stroke="${c.coastStroke}" stroke-width="2" stroke-opacity="0.65"/>
+        <path d="M 1110,675 Q 980,695 885,785" fill="none" stroke="${c.coastStroke}" stroke-width="1.6" stroke-opacity="0.5" stroke-dasharray="4,2"/>
 
         <!-- 3. VICE BEACH & BISCAYNE BAY BARRIER ISLANDS (East Coast svgY=840..1380) -->
         <!-- Outer Vice Beach / Ocean Drive Barrier Island -->
         <path d="M 1560,845 Q 1655,950 1655,1215 L 1575,1215 Q 1575,980 1535,860 Z"
-              fill="#2d124d" fill-opacity="${c.landFillOpacity}"
-              stroke="${c.beachStroke}" stroke-width="3"/>
-        <!-- Venetian & Starfish Islands in Biscayne Bay -->
-        <ellipse cx="1465" cy="1095" rx="48" ry="22" fill="none" stroke="${c.coastStroke}" stroke-width="2.5"/>
-        <ellipse cx="1475" cy="1190" rx="55" ry="25" fill="none" stroke="${c.beachStroke}" stroke-width="2.5"/>
-        <ellipse cx="1515" cy="1305" rx="45" ry="24" fill="none" stroke="${c.coastStroke}" stroke-width="2"/>
-        <ellipse cx="1610" cy="1290" rx="36" ry="20" fill="none" stroke="${c.beachStroke}" stroke-width="2"/>
-
-        <!-- 4. LEONIDA KEYS ARCHIPELAGO (Bottom-Left Curving Chain svgY=1650..1955) -->
-        <!-- Upper Key Largo -->
-        <path d="M 1155,1655 Q 1125,1755 1015,1800 L 995,1765 Q 1085,1715 1120,1645 Z"
-              fill="none" stroke="${c.beachStroke}" stroke-width="3"/>
-        <!-- Middle Keys / Islamorada -->
-        <ellipse cx="685" cy="1765" rx="75" ry="35" fill="none" stroke="${c.coastStroke}" stroke-width="2.5"/>
-        <!-- North Reef Atoll Island -->
-        <ellipse cx="545" cy="1685" rx="35" ry="52" fill="none" stroke="${c.coastStroke}" stroke-width="2" stroke-dasharray="4,4"/>
-        <!-- Gator Keys / Key West (Bottom-Left) -->
-        <path d="M 555,1840 L 345,1935 L 335,1870 L 515,1805 Z"
-              fill="none" stroke="${c.beachStroke}" stroke-width="3"/>
-
-        <!-- 5. VIA AIRPORT RUNWAYS (svgY=1140..1185, leafletY=815..860) -->
-        <g stroke="#00f0ff" stroke-width="4" stroke-opacity="0.75">
-          <line x1="965" y1="1145" x2="1155" y2="1145"/>
-          <line x1="965" y1="1180" x2="1155" y2="1180"/>
+              fill="url(#urbanBlockGrid)"
+              stroke="${c.beachStroke}" stroke-width="2.8"/>
+        <!-- Vice Beach Art Deco Street Grid & Ocean Drive Promenade -->
+        <g stroke="${c.localStreet}" stroke-width="1.1" fill="none">
+          <path d="M 1565,865 Q 1638,975 1638,1205"/>
+          <path d="M 1552,870 Q 1615,980 1615,1205"/>
+          <path d="M 1542,880 Q 1592,985 1592,1205"/>
+          <line x1="1550" y1="920" x2="1625" y2="920"/>
+          <line x1="1560" y1="965" x2="1635" y2="965"/>
+          <line x1="1568" y1="1010" x2="1644" y2="1010"/>
+          <line x1="1572" y1="1055" x2="1648" y2="1055"/>
+          <line x1="1574" y1="1100" x2="1652" y2="1100"/>
+          <line x1="1575" y1="1145" x2="1653" y2="1145"/>
+          <line x1="1575" y1="1185" x2="1653" y2="1185"/>
         </g>
 
-        <!-- 6. STATEWIDE INTERSTATE & OVERSEAS HIGHWAY NETWORK (Traced 1:1) -->
-        <g fill="none" stroke="${c.secondaryRoad}" stroke-width="3.5" stroke-linecap="round">
+        <!-- Venetian, Leaf Links & Starfish Islands in Biscayne Bay -->
+        <!-- Leaf Links Golf Island (svgY=1005, leafletY=995) -->
+        <ellipse cx="1500" cy="1015" rx="34" ry="22" fill="rgba(16, 185, 129, 0.2)" stroke="#34d399" stroke-width="1.8"/>
+        <path d="M 1480,1015 Q 1500,1002 1520,1018" fill="none" stroke="#34d399" stroke-width="1" stroke-dasharray="2,2"/>
+        <!-- Venetian Islands -->
+        <ellipse cx="1465" cy="1095" rx="48" ry="22" fill="url(#urbanBlockGrid)" stroke="${c.coastStroke}" stroke-width="2.2"/>
+        <!-- Starfish Island Mansion Loop -->
+        <ellipse cx="1475" cy="1190" rx="55" ry="25" fill="url(#urbanBlockGrid)" stroke="${c.beachStroke}" stroke-width="2.2"/>
+        <ellipse cx="1475" cy="1190" rx="36" ry="13" fill="none" stroke="${c.localStreet}" stroke-width="1.1"/>
+        <!-- Southern Bay & Charter Yacht Islands -->
+        <ellipse cx="1515" cy="1305" rx="45" ry="24" fill="rgba(30, 16, 53, 0.35)" stroke="${c.coastStroke}" stroke-width="1.8"/>
+        <ellipse cx="1610" cy="1290" rx="36" ry="20" fill="rgba(30, 16, 53, 0.35)" stroke="${c.beachStroke}" stroke-width="1.8"/>
+        <!-- Aqua Stadium Marine Basin (svgY=1220, leafletY=780) -->
+        <path d="M 1355,1215 A 22,16 0 1,1 1395,1215" fill="none" stroke="#00f0ff" stroke-width="2"/>
+
+        <!-- 3B. HIGH-DETAIL DOWNTOWN VICE CITY, LITTLE HAITI, LITTLE CUBA & BAYSIDE STREET GRID -->
+        <rect x="1155" y="835" width="195" height="315" rx="8" fill="url(#urbanBlockGrid)" opacity="0.88"/>
+        <g stroke="${c.secondaryRoad}" stroke-width="1.5" fill="none">
+          <!-- North-South Avenues across Downtown Vice, Little Haiti & Little Cuba -->
+          <line x1="1175" y1="835" x2="1175" y2="1160"/>
+          <line x1="1210" y1="825" x2="1210" y2="1185"/>
+          <line x1="1245" y1="825" x2="1245" y2="1220"/>
+          <line x1="1280" y1="840" x2="1280" y2="1175"/>
+          <line x1="1315" y1="855" x2="1315" y2="1140"/>
+          <line x1="1345" y1="885" x2="1345" y2="1110"/>
+          <!-- East-West Boulevards (Catalan Blvd, Flagler, Calle Ocho, Little Haiti) -->
+          <line x1="1150" y1="860" x2="1315" y2="860"/>
+          <line x1="1145" y1="905" x2="1335" y2="905"/>
+          <line x1="1140" y1="950" x2="1350" y2="950"/>
+          <line x1="1135" y1="995" x2="1355" y2="995"/>
+          <line x1="1145" y1="1040" x2="1355" y2="1040"/>
+          <line x1="1155" y1="1085" x2="1345" y2="1085"/>
+          <line x1="1165" y1="1130" x2="1330" y2="1130"/>
+        </g>
+
+        <!-- 3C. ARCHITECTURAL BUILDING FOOTPRINTS FOR ICONIC VICE CITY & LEONIDA LANDMARKS -->
+        <g fill="${c.buildingFill}" stroke="${c.buildingStroke}" stroke-width="1.2">
+          <!-- Sahara Arena Circular Waterfront Stadium (x:1340, svgY:1030) -->
+          <circle cx="1340" cy="1030" r="14" stroke="#ff2a85" stroke-width="1.6"/>
+          <circle cx="1340" cy="1030" r="7" fill="none" stroke="#00f0ff" stroke-width="0.8"/>
+          <!-- Schlongberg Sachs Skyscraper & Helipad (x:1265, svgY:1035) -->
+          <rect x="1256" y="1026" width="18" height="18" rx="2" stroke="#00f0ff" stroke-width="1.5"/>
+          <circle cx="1265" cy="1035" r="5" fill="none" stroke="#fde047" stroke-width="0.9"/>
+          <!-- Megamundo Tower & Galina Opera Complex (x:1305, svgY:1005) -->
+          <rect x="1296" y="994" width="22" height="16" rx="2"/>
+          <!-- Fleeca Field & Courtland Park Stadium Bowl (x:1150, svgY:960) -->
+          <ellipse cx="1150" cy="960" rx="18" ry="13" stroke="#fde047" stroke-width="1.4"/>
+          <ellipse cx="1150" cy="960" rx="10" ry="7" fill="none" stroke="#34d399" stroke-width="0.9"/>
+          <!-- Vice Port Container Terminal Piers & Cruise Ship Berths (x:1210..1295, svgY:1280..1375) -->
+          <rect x="1205" y="1290" width="55" height="16" rx="1"/>
+          <rect x="1205" y="1315" width="65" height="16" rx="1"/>
+          <rect x="1205" y="1340" width="58" height="16" rx="1"/>
+          <rect x="1195" y="1365" width="48" height="14" rx="1"/>
+        </g>
+
+        <!-- 3D. PORT GELLHORN STREET GRID & GELLHORN INTERNATIONAL RACEWAY CIRCUIT -->
+        <rect x="525" y="995" width="175" height="185" rx="6" fill="url(#urbanBlockGrid)" opacity="0.75"/>
+        <g stroke="${c.secondaryRoad}" stroke-width="1.3" fill="none">
+          <line x1="550" y1="995" x2="550" y2="1180"/>
+          <line x1="595" y1="985" x2="595" y2="1190"/>
+          <line x1="640" y1="985" x2="640" y2="1190"/>
+          <line x1="685" y1="1000" x2="685" y2="1175"/>
+          <line x1="525" y1="1035" x2="700" y2="1035"/>
+          <line x1="520" y1="1075" x2="705" y2="1075"/>
+          <line x1="525" y1="1115" x2="705" y2="1115"/>
+          <line x1="535" y1="1155" x2="695" y2="1155"/>
+        </g>
+        <!-- Gellhorn International Raceway Oval & Chicane (x:610, svgY:935) -->
+        <ellipse cx="615" cy="930" rx="38" ry="20" fill="rgba(15, 23, 42, 0.55)" stroke="#fb7185" stroke-width="2.5"/>
+        <ellipse cx="615" cy="930" rx="28" ry="12" fill="none" stroke="#fde047" stroke-width="0.9" stroke-dasharray="3,3"/>
+        <!-- Port Gellhorn Cargo Piers (x:500..540, svgY:1120..1170) -->
+        <g fill="${c.buildingFill}" stroke="${c.coastStroke}" stroke-width="1">
+          <rect x="490" y="1120" width="35" height="10"/>
+          <rect x="485" y="1138" width="40" height="10"/>
+          <rect x="492" y="1156" width="33" height="10"/>
+        </g>
+
+        <!-- 4. LEONIDA KEYS ARCHIPELAGO (Bottom-Left Curving Chain svgY=1650..1955) -->
+        <!-- Upper Key Largo / Key Lento -->
+        <path d="M 1155,1655 Q 1125,1755 1015,1800 L 995,1765 Q 1085,1715 1120,1645 Z"
+              fill="url(#urbanBlockGrid)" stroke="${c.beachStroke}" stroke-width="2.5"/>
+        <!-- Middle Keys / Islamorada -->
+        <ellipse cx="685" cy="1765" rx="75" ry="35" fill="url(#urbanBlockGrid)" stroke="${c.coastStroke}" stroke-width="2.2"/>
+        <!-- North Reef Atoll Island -->
+        <ellipse cx="545" cy="1685" rx="35" ry="52" fill="none" stroke="${c.coastStroke}" stroke-width="1.8" stroke-dasharray="4,4"/>
+        <!-- Gator Keys / Key West (Bottom-Left) & Street Grid -->
+        <path d="M 555,1840 L 345,1935 L 335,1870 L 515,1805 Z"
+              fill="url(#urbanBlockGrid)" stroke="${c.beachStroke}" stroke-width="2.5"/>
+        <!-- Riquezas Keys Radome Footprint -->
+        <circle cx="480" cy="1825" r="9" fill="${c.buildingFill}" stroke="#00f0ff" stroke-width="1.2"/>
+
+        <!-- 5. VIA AIRPORT TARMAC, TERMINALS & RUNWAYS (svgY=1120..1205, leafletY=795..880) -->
+        <g>
+          <!-- Airport Perimeter Fence -->
+          <rect x="955" y="1125" width="210" height="75" rx="8" fill="rgba(15, 23, 42, 0.55)" stroke="${c.coastStroke}" stroke-width="1.2" stroke-dasharray="4,3"/>
+          <!-- Parallel East-West Runways & Diagonal Cross-Runway -->
+          <line x1="965" y1="1142" x2="1155" y2="1142" stroke="#1e293b" stroke-width="10" stroke-linecap="butt"/>
+          <line x1="965" y1="1142" x2="1155" y2="1142" stroke="#00f0ff" stroke-width="1.4" stroke-dasharray="6,4"/>
+          <line x1="965" y1="1182" x2="1155" y2="1182" stroke="#1e293b" stroke-width="10" stroke-linecap="butt"/>
+          <line x1="965" y1="1182" x2="1155" y2="1182" stroke="#00f0ff" stroke-width="1.4" stroke-dasharray="6,4"/>
+          <line x1="990" y1="1182" x2="1120" y2="1142" stroke="#334155" stroke-width="5"/>
+          <!-- VIA Main Terminal Concourses & Hangars -->
+          <path d="M 1055,1152 L 1110,1152 L 1110,1172 L 1055,1172 Z" fill="${c.buildingFill}" stroke="#fde047" stroke-width="1.3"/>
+          <rect x="975" y="1155" width="24" height="14" fill="${c.buildingFill}" stroke="#00f0ff" stroke-width="1"/>
+          <rect x="1008" y="1155" width="24" height="14" fill="${c.buildingFill}" stroke="#00f0ff" stroke-width="1"/>
+        </g>
+
+        <!-- 6. STATEWIDE INTERSTATE, METRORAIL & OVERSEAS HIGHWAY NETWORK (Traced 1:1) -->
+        <g fill="none" stroke="${c.secondaryRoad}" stroke-width="3" stroke-linecap="round">
           <!-- Northwest Mountain & West Coast Loop (Mt. Kalaga -> Port Gellhorn -> Grassrivers) -->
           <path d="M 960,155 L 485,260 L 350,560 L 580,715 L 615,935 L 645,1115 L 965,1475"/>
           <!-- Central Heartland Cross-State Road (Port Gellhorn -> Ambrosia -> Lake Leonida) -->
           <path d="M 615,1075 L 845,880 L 1075,680"/>
+          <!-- Mount Kalaga Winding Trails & Fire Watch Switchbacks -->
+          <path d="M 485,260 Q 560,390 685,455 Q 785,515 845,650" stroke-width="1.8" stroke-dasharray="5,3"/>
+          <path d="M 395,590 Q 545,535 640,490" stroke-width="1.6" stroke-dasharray="4,3"/>
+          <!-- Grassrivers Swamp Highway -->
+          <path d="M 965,1475 L 1065,1515 L 1245,1365" stroke-width="2"/>
         </g>
 
-        <g fill="none" stroke="${c.highwayOuter}" stroke-width="6" stroke-linecap="round" stroke-linejoin="round" stroke-opacity="0.85">
+        <g fill="none" stroke="${c.highwayOuter}" stroke-width="5.5" stroke-linecap="round" stroke-linejoin="round" stroke-opacity="0.88">
           <!-- East Coast I-95 Corridor (North Spit -> Lake Leonida East -> Downtown Vice -> Vice Port -> Keys) -->
           <path d="M 960,155 L 1285,265 L 1385,480 L 1355,675 L 1320,985 L 1265,1180 L 1140,1655"/>
-          <!-- Cross-Vice Causes & Airport Expressway (VIA -> Downtown -> Venetian Causeway -> Vice Beach) -->
+          <!-- Cross-Vice Causeways & Airport Expressway (VIA -> Downtown -> Venetian Causeway -> Vice Beach) -->
           <path d="M 645,1115 L 985,1155 L 1265,1035 L 1465,1095 L 1595,1095"/>
+          <!-- North Beach & MacArthur / Starfish Causeways -->
           <path d="M 1280,940 L 1565,940"/>
+          <path d="M 1275,1185 L 1475,1190 L 1585,1190"/>
           <!-- Overseas Highway Bridges down to Gator Keys (Bottom-Left) -->
           <path d="M 1140,1655 L 1055,1765 L 885,1805 L 685,1765 L 555,1840 L 415,1895"/>
         </g>
-        <g fill="none" stroke="${c.highwayInner}" stroke-width="2" stroke-linecap="round" stroke-opacity="0.9">
+        <g fill="none" stroke="${c.highwayInner}" stroke-width="1.8" stroke-linecap="round" stroke-opacity="0.95">
           <path d="M 960,155 L 1285,265 L 1385,480 L 1355,675 L 1320,985 L 1265,1180 L 1140,1655"/>
           <path d="M 645,1115 L 985,1155 L 1265,1035 L 1465,1095 L 1595,1095"/>
+          <path d="M 1280,940 L 1565,940"/>
+          <path d="M 1275,1185 L 1475,1190 L 1585,1190"/>
           <path d="M 1140,1655 L 1055,1765 L 885,1805 L 685,1765 L 555,1840 L 415,1895"/>
         </g>
+        <!-- Vice City Elevated Metrorail Transit Line -->
+        <path d="M 1085,1155 L 1235,1080 L 1280,990 L 1225,840" fill="none" stroke="#00f0ff" stroke-width="2" stroke-dasharray="3,3"/>
 
         <!-- 7. COORDINATE OVERLAY GRID -->
         <rect width="2000" height="2000" fill="url(#coordGrid)"/>
 
-        <!-- 8. AUTHENTIC GTA 6 REGION & DISTRICT LABELS (Positioned on exact map landmarks) -->
+        <!-- 8. AUTHENTIC GTA 6 REGION, NEIGHBORHOOD & STREET LABELS -->
         <g font-family="Orbitron, Space Grotesk, sans-serif" font-weight="900" text-anchor="middle" letter-spacing="2.5">
-          <text x="1255" y="1025" fill="#ffffff" font-size="28" stroke="#000" stroke-width="5" paint-order="stroke">VICE CITY</text>
-          <text x="1635" y="1075" fill="#ff2a85" font-size="22" stroke="#000" stroke-width="4" paint-order="stroke">VICE BEACH</text>
-          <text x="1475" y="1145" fill="#00f0ff" font-size="14" stroke="#000" stroke-width="3" paint-order="stroke">STARFISH &amp; VENETIAN</text>
-          <text x="1215" y="875" fill="#f472b6" font-size="16" stroke="#000" stroke-width="3" paint-order="stroke">LITTLE HAITI</text>
-          <text x="1065" y="1165" fill="#e2e8f0" font-size="16" stroke="#000" stroke-width="3.5" paint-order="stroke">✈️ VIA AIRPORT</text>
-          <text x="1235" y="1355" fill="#94a3b8" font-size="16" stroke="#000" stroke-width="3" paint-order="stroke">VICE PORT</text>
-          <text x="1205" y="680" fill="#38bdf8" font-size="21" stroke="#000" stroke-width="4" paint-order="stroke">LAKE LEONIDA</text>
-          <text x="615" y="1085" fill="#fde047" font-size="22" stroke="#000" stroke-width="4" paint-order="stroke">PORT GELLHORN</text>
-          <text x="610" y="925" fill="#fb7185" font-size="13" stroke="#000" stroke-width="2.5" paint-order="stroke">GELLHORN RACEWAY</text>
-          <text x="865" y="885" fill="#f97316" font-size="19" stroke="#000" stroke-width="3.5" paint-order="stroke">AMBROSIA</text>
-          <text x="650" y="485" fill="#86efac" font-size="22" stroke="#000" stroke-width="4" paint-order="stroke">MOUNT KALAGA</text>
-          <text x="1230" y="255" fill="#c084fc" font-size="19" stroke="#000" stroke-width="3.5" paint-order="stroke">NORTH VICE COAST</text>
-          <text x="975" y="1495" fill="#34d399" font-size="20" stroke="#000" stroke-width="3.5" paint-order="stroke">GRASSRIVERS</text>
-          <text x="685" y="1835" fill="#fbbf24" font-size="21" stroke="#000" stroke-width="4" paint-order="stroke">LEONIDA KEYS</text>
-          <text x="435" y="1930" fill="#00f0ff" font-size="15" stroke="#000" stroke-width="3" paint-order="stroke">GATOR KEYS</text>
+          <text x="1255" y="1025" fill="#ffffff" font-size="26" stroke="#000" stroke-width="5" paint-order="stroke">VICE CITY</text>
+          <text x="1635" y="1075" fill="#ff2a85" font-size="21" stroke="#000" stroke-width="4" paint-order="stroke">VICE BEACH</text>
+          <text x="1475" y="1145" fill="#00f0ff" font-size="13" stroke="#000" stroke-width="3" paint-order="stroke">STARFISH &amp; VENETIAN</text>
+          <text x="1215" y="875" fill="#f472b6" font-size="15" stroke="#000" stroke-width="3" paint-order="stroke">LITTLE HAITI</text>
+          <text x="1065" y="1165" fill="#e2e8f0" font-size="15" stroke="#000" stroke-width="3.5" paint-order="stroke">✈️ VIA AIRPORT</text>
+          <text x="1235" y="1355" fill="#94a3b8" font-size="15" stroke="#000" stroke-width="3" paint-order="stroke">VICE PORT</text>
+          <text x="1205" y="680" fill="#38bdf8" font-size="20" stroke="#000" stroke-width="4" paint-order="stroke">LAKE LEONIDA</text>
+          <text x="615" y="1085" fill="#fde047" font-size="21" stroke="#000" stroke-width="4" paint-order="stroke">PORT GELLHORN</text>
+          <text x="615" y="900" fill="#fb7185" font-size="12" stroke="#000" stroke-width="2.5" paint-order="stroke">GELLHORN RACEWAY</text>
+          <text x="865" y="885" fill="#f97316" font-size="18" stroke="#000" stroke-width="3.5" paint-order="stroke">AMBROSIA</text>
+          <text x="650" y="485" fill="#86efac" font-size="21" stroke="#000" stroke-width="4" paint-order="stroke">MOUNT KALAGA</text>
+          <text x="1230" y="255" fill="#c084fc" font-size="18" stroke="#000" stroke-width="3.5" paint-order="stroke">NORTH VICE COAST</text>
+          <text x="975" y="1495" fill="#34d399" font-size="19" stroke="#000" stroke-width="3.5" paint-order="stroke">GRASSRIVERS</text>
+          <text x="685" y="1835" fill="#fbbf24" font-size="20" stroke="#000" stroke-width="4" paint-order="stroke">LEONIDA KEYS</text>
+          <text x="435" y="1930" fill="#00f0ff" font-size="14" stroke="#000" stroke-width="3" paint-order="stroke">GATOR KEYS</text>
+        </g>
+
+        <!-- 8B. FINE MICRO-LABELS VISIBLE WHEN ZOOMED IN (Streets, Sub-Districts & Landmarks) -->
+        <g font-family="JetBrains Mono, Space Grotesk, sans-serif" font-weight="700" text-anchor="middle" letter-spacing="1.2" opacity="0.92">
+          <text x="1645" y="1145" fill="#fde047" font-size="8.5" stroke="#000" stroke-width="2" paint-order="stroke">OCEAN DRIVE</text>
+          <text x="1625" y="1175" fill="#f9a8d4" font-size="8" stroke="#000" stroke-width="2" paint-order="stroke">WASHINGTON BEACH</text>
+          <text x="1585" y="910" fill="#f9a8d4" font-size="8" stroke="#000" stroke-width="2" paint-order="stroke">NORTH BEACH</text>
+          <text x="1500" y="1008" fill="#86efac" font-size="7.5" stroke="#000" stroke-width="2" paint-order="stroke">LEAF LINKS GOLF</text>
+          <text x="1475" y="1193" fill="#fde047" font-size="7.5" stroke="#000" stroke-width="2" paint-order="stroke">STARFISH EST.</text>
+          <text x="1375" y="1232" fill="#38bdf8" font-size="7.5" stroke="#000" stroke-width="2" paint-order="stroke">AQUA STADIUM</text>
+          <text x="1345" y="968" fill="#67e8f9" font-size="8" stroke="#000" stroke-width="2" paint-order="stroke">BAYSIDE &amp; CATALAN BLVD</text>
+          <text x="1340" y="1052" fill="#ff2a85" font-size="7.5" stroke="#000" stroke-width="2" paint-order="stroke">SAHARA ARENA</text>
+          <text x="1195" y="1115" fill="#fb923c" font-size="8.5" stroke="#000" stroke-width="2" paint-order="stroke">LITTLE CUBA</text>
+          <text x="1160" y="1015" fill="#cbd5e1" font-size="8" stroke="#000" stroke-width="2" paint-order="stroke">STOCKYARD RAIL</text>
+          <text x="1150" y="940" fill="#fde047" font-size="7.5" stroke="#000" stroke-width="2" paint-order="stroke">FLEECA FIELD</text>
+          <text x="1290" y="1418" fill="#fde047" font-size="8" stroke="#000" stroke-width="2" paint-order="stroke">BELPOINT LIGHTHOUSE</text>
+          <text x="1020" y="1755" fill="#fbbf24" font-size="8.5" stroke="#000" stroke-width="2" paint-order="stroke">KEY LENTO</text>
+          <text x="885" y="1822" fill="#38bdf8" font-size="8" stroke="#000" stroke-width="2" paint-order="stroke">OVERSEAS HWY BRIDGE</text>
+          <text x="480" y="1845" fill="#00f0ff" font-size="7.5" stroke="#000" stroke-width="2" paint-order="stroke">RIQUEZAS RADOME</text>
+          <text x="670" y="982" fill="#a7f3d0" font-size="8" stroke="#000" stroke-width="2" paint-order="stroke">EMERALD SPRINGS</text>
+          <text x="815" y="815" fill="#fdba74" font-size="8" stroke="#000" stroke-width="2" paint-order="stroke">KELLY COUNTY</text>
+          <text x="1045" y="735" fill="#93c5fd" font-size="8" stroke="#000" stroke-width="2" paint-order="stroke">LEONARD COUNTY</text>
+          <text x="640" y="455" fill="#bbf7d0" font-size="8" stroke="#000" stroke-width="2" paint-order="stroke">HOFFMAN OBSERVATORY</text>
         </g>
       </svg>`;
       return "data:image/svg+xml;utf8," + encodeURIComponent(svg);
@@ -1352,8 +1551,8 @@
       map = L.map('map', {
         crs: L.CRS.Simple,
         minZoom: -1.4,
-        maxZoom: 2.3,
-        zoomSnap: 0.2,
+        maxZoom: 3.2,
+        zoomSnap: 0.15,
         zoomControl: false,
         attributionControl: false
       });
@@ -1363,9 +1562,11 @@
       }
 
       const bounds = [[0, 0], [2000, 2000]];
-      // Layer 1: Exact saved reference satellite map photo (leonida-map.jpg)
-      photoBaseOverlay = L.imageOverlay('./leonida-map.jpg', bounds).addTo(map);
-      // Layer 2: Interactive Retro Vice '86 / Satellite / Tactical Vector & Labels Overlay
+      // Layer 1: Exact saved reference satellite map photo (leonida-map.jpg) with HD contrast enhancement
+      photoBaseOverlay = L.imageOverlay('./leonida-map.jpg', bounds, {
+        className: 'map-photo-hd-filter'
+      }).addTo(map);
+      // Layer 2: Interactive 4000x4000 Ultra-HD Vector & Street Grid Overlay
       mapImageOverlay = L.imageOverlay(generateFullLeonidaMapSVG(state.mapTheme), bounds).addTo(map);
       map.fitBounds(bounds);
       map.setView([980, 1020], isMobile ? -0.55 : -0.15);
