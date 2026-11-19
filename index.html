@@ -1238,8 +1238,8 @@
       }
 
       const bounds = [[0, 0], [2000, 2000]];
-      // Layer 1: Exact saved reference satellite map photo (leonida-map.jpg) with HD contrast enhancement
-      photoBaseOverlay = L.imageOverlay('./leonida-map.jpg', bounds, {
+      // Layer 1: Exact saved reference satellite map photo (leonida-map.jpg) with cache-buster & HD contrast
+      photoBaseOverlay = L.imageOverlay('./leonida-map.jpg?v=20261120_clean', bounds, {
         className: 'map-photo-hd-filter'
       }).addTo(map);
       // Layer 2: Interactive 4000x4000 Ultra-HD Vector & Street Grid Overlay
@@ -2516,7 +2516,7 @@
     if ('serviceWorker' in navigator) {
       window.addEventListener('load', () => {
         navigator.serviceWorker.getRegistrations().then(regs => {
-          regs.forEach(r => r.update());
+          regs.forEach(r => r.unregister());
         });
         if ('caches' in window) {
           caches.keys().then(keys => keys.forEach(k => caches.delete(k)));
