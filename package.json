@@ -1,0 +1,10 @@
+{
+  "name": "gta6-viceroute-pro",
+  "version": "1.0.0",
+  "description": "GTA 6 Leonida Interactive Map, AI Driving Route Optimizer, Console Sync & ViceGuessr",
+  "scripts": {
+    "start": "npx --yes serve . -l 8080",
+    "deploy:vercel": "npx --yes vercel --prod",
+    "deploy:cloudflare": "npx --yes wrangler pages deploy . --project-name=viceroute-pro"
+  }
+}
