@@ -278,7 +278,7 @@
       <div class="hidden lg:flex items-center bg-slate-950/90 p-1 rounded-xl border border-cyan-500/40">
         <button onclick="switchMode('map')" id="tabMapDesktop" class="px-3 py-1 rounded-lg text-xs font-bold flex items-center gap-1.5 bg-pink-600 text-white shadow">
           <i data-lucide="map" class="w-3.5 h-3.5"></i>
-          <span>100 Spots Map</span>
+          <span>125 Spots Map</span>
         </button>
         <button onclick="switchMode('guessr')" id="tabGuessrDesktop" class="px-3 py-1 rounded-lg text-xs font-bold flex items-center gap-1.5 text-slate-400 hover:text-white transition">
           <i data-lucide="crosshair" class="w-3.5 h-3.5 text-cyan-400"></i>
@@ -295,14 +295,14 @@
       </button>
 
       <!--button for stats-->
-      <a href="https://github.com/lociAI/gta6-leonida-community-map" target="_blank" rel="noopener" class="px-2.5 py-1.5 rounded-xl text-xs font-display font-extrabold text-pink-300 bg-slate-950/90 hover:bg-slate-900 border border-pink-500/50 active:scale-95 transition flex items-center gap-1" title="Contribute & Verify Spots on GitHub (lociAI)">
+      <a href="https://github.com/lociAI/gta6-leonida-community-map" target="_blank" rel="noopener" class="px-2.5 py-1.5 rounded-xl text-xs font-display font-extrabold text-pink-300 bg-slate-950/90 hover:bg-slate-900 border border-pink-500/50 active:scale-95 transition flex items-center gap-1" title="View Project on GitHub (lociAI)">
         <i data-lucide="github" class="w-3.5 h-3.5 text-cyan-400"></i>
         <span class="hidden sm:inline">Community Repo</span>
       </a>
 
       <button onclick="openKingpinStatsModal()" class="flex items-center gap-1 bg-slate-950/90 hover:bg-slate-900 border border-pink-500/50 px-2.5 py-1.5 rounded-xl text-[11px] transition active:scale-95" title="View Your Discovery Progress & Save Backup">
         <i data-lucide="check-circle-2" class="w-3.5 h-3.5 text-emerald-400"></i>
-        <span id="progressCounter" class="font-display font-extrabold text-white">0/100</span>
+        <span id="progressCounter" class="font-display font-extrabold text-white">0/125</span>
       </button>
     </div>
   </header>
@@ -343,7 +343,7 @@
         <!-- Search & Quick Filter Bar -->
         <div class="mt-2.5 flex items-center gap-1.5">
           <div class="relative flex-1">
-            <input id="searchSpotsDesktop" oninput="handleSearchInput(this.value)" type="text" placeholder="Search 100 spots, UFOs, Tommy Mansion, Stashes..." class="w-full bg-slate-950/90 border border-pink-500/40 rounded-xl pl-3 pr-7 py-1.5 text-xs text-white placeholder-slate-500 focus:outline-none focus:border-cyan-400" />
+            <input id="searchSpotsDesktop" oninput="handleSearchInput(this.value)" type="text" placeholder="Search 125 spots, WAiNK landmarks, Sahara Arena, Safehouses..." class="w-full bg-slate-950/90 border border-pink-500/40 rounded-xl pl-3 pr-7 py-1.5 text-xs text-white placeholder-slate-500 focus:outline-none focus:border-cyan-400" />
           </div>
           <button onclick="toggleSecretsOnly()" id="btnSecretsOnlyDesktop" class="px-2.5 py-1.5 rounded-xl bg-amber-500/15 border border-amber-400/50 text-amber-300 text-[11px] font-extrabold hover:bg-amber-500/25 transition shrink-0" title="Show Hidden Mysteries, Easter Eggs & Packages">
             🛸 Secrets
@@ -351,7 +351,7 @@
         </div>
       </div>
 
-      <!-- Category Filters (9 Categories, 100 Spots) -->
+      <!-- Category Filters (9 Categories, 125 Spots) -->
       <div class="p-3 border-b border-pink-500/25">
         <div class="flex items-center justify-between mb-1.5">
           <span class="text-[10px] font-display font-bold uppercase tracking-wider text-pink-300">9 Map Layers (Discovered / Total)</span>
@@ -365,8 +365,8 @@
         <!-- 100% Discovery Progress Bar & Status Filter Tabs (All / Remaining / Discovered) -->
         <div class="mt-2.5 pt-2 border-t border-pink-500/20">
           <div class="flex items-center justify-between text-[10px] font-display font-bold mb-1">
-            <span class="text-cyan-300" id="checklistProgressLabelDesktop">DISCOVERED: 0 / 100 (0%)</span>
-            <span class="text-emerald-400" id="checklistRemainingLabelDesktop">100 Remaining</span>
+            <span class="text-cyan-300" id="checklistProgressLabelDesktop">DISCOVERED: 0 / 125 (0%)</span>
+            <span class="text-emerald-400" id="checklistRemainingLabelDesktop">125 Remaining</span>
           </div>
           <div class="w-full h-2 rounded-full bg-slate-900 overflow-hidden border border-pink-500/30 mb-2">
             <div id="checklistProgressBarDesktop" class="h-full vice-gradient transition-all duration-300" style="width: 0%"></div>
@@ -419,11 +419,6 @@
             <span id="leonidaClockText">🌅 19:45 • LEONIDA SUNSET</span>
           </button>
 
-          <!-- Custom Pin Dropper Mode Button -->
-          <button onclick="togglePinDropMode()" id="btnDropPinMode" class="shrink-0 px-2.5 py-1.5 rounded-xl bg-slate-950/95 backdrop-blur-md border border-amber-400/70 text-[11px] font-display font-extrabold text-amber-300 flex items-center gap-1 shadow-lg active:scale-95 transition" title="Tap anywhere on the map to drop your own custom secret/stash pin">
-            <span>📌 DROP PIN</span>
-          </button>
-
           <!-- Leonida Social ViceFeed Cards Button -->
           <button onclick="toggleViceFeedDrawer()" id="btnViceFeedHud" class="shrink-0 px-2.5 py-1.5 rounded-xl bg-slate-950/95 backdrop-blur-md border border-pink-500/80 text-[11px] font-display font-extrabold text-pink-300 flex items-center gap-1 shadow-lg active:scale-95 transition" title="Open Leonida Social Feed Cards & Viral Clips">
             <span>📱 VICEFEED</span>
@@ -441,7 +436,7 @@
 
           <!-- Fast-Travel Region Pills (Aligned 1:1 with Reference Map) -->
           <button onclick="flyToRegion(1000, 1000, -0.35)" class="shrink-0 px-2.5 py-1.5 rounded-xl bg-slate-950/90 backdrop-blur-md border border-pink-500/40 text-[11px] font-bold text-white hover:border-pink-400 transition shadow">
-            🗺 Full Leonida (100)
+            🗺 Full Leonida (125)
           </button>
           <button onclick="flyToRegion(1605, 920, 0.9)" class="shrink-0 px-2.5 py-1.5 rounded-xl bg-slate-950/90 backdrop-blur-md border border-pink-500/40 text-[11px] font-bold text-pink-300 hover:border-pink-400 transition shadow">
             🌴 Vice Beach
@@ -548,14 +543,14 @@
         <div onclick="toggleMobileDrawer(false)" class="pt-2.5 pb-1.5 flex flex-col items-center cursor-pointer">
           <div class="w-10 h-1.5 rounded-full bg-pink-500/60"></div>
           <div class="w-full px-4 pt-1 flex items-center justify-between">
-            <span class="text-xs font-display font-extrabold uppercase tracking-wider text-cyan-400">100 Leonida Spots & Hidden Secrets</span>
+            <span class="text-xs font-display font-extrabold uppercase tracking-wider text-cyan-400">125 Leonida Spots & Hidden Secrets</span>
             <button class="text-xs text-pink-400 font-bold">Close ✕</button>
           </div>
         </div>
 
         <!-- Mobile Search & Secrets Filter -->
         <div class="px-3.5 pb-2 flex items-center gap-1.5">
-          <input id="searchSpotsMobile" oninput="handleSearchInput(this.value)" type="text" placeholder="Search 100 spots, UFO, Ghost, Stash..." class="flex-1 bg-slate-950 border border-pink-500/40 rounded-xl px-3 py-1.5 text-xs text-white" />
+          <input id="searchSpotsMobile" oninput="handleSearchInput(this.value)" type="text" placeholder="Search 125 spots, WAiNK, Sahara Arena, Stash..." class="flex-1 bg-slate-950 border border-pink-500/40 rounded-xl px-3 py-1.5 text-xs text-white" />
           <button onclick="toggleSecretsOnly()" class="px-2.5 py-1.5 rounded-xl bg-amber-500/20 border border-amber-400/50 text-amber-300 text-xs font-extrabold">
             🛸 Secrets
           </button>
@@ -584,7 +579,7 @@
   <nav class="md:hidden h-14 bg-[#090414]/98 backdrop-blur-xl border-t border-pink-500/50 px-2 flex items-center justify-around z-40 shrink-0">
     <button onclick="toggleMobileDrawer()" id="navBtnPins" class="flex flex-col items-center justify-center py-1 px-2 text-slate-300 active:scale-95 transition">
       <i data-lucide="list-filter" class="w-4 h-4 text-cyan-400"></i>
-      <span class="text-[10px] font-bold mt-0.5">100 Spots</span>
+      <span class="text-[10px] font-bold mt-0.5">125 Spots</span>
     </button>
 
     <button onclick="generateOptimalRoute()" class="flex flex-col items-center justify-center py-1.5 px-3.5 rounded-xl vice-retro-btn text-white active:scale-95 transition">
@@ -695,59 +690,6 @@
   </div>
 
   <!-- ====================================================================== -->
-  <!-- CUSTOM PIN CREATOR MODAL (DROP PIN ON MAP)                             -->
-  <!-- ====================================================================== -->
-  <div id="customPinModal" class="hidden fixed inset-0 z-50 bg-black/85 backdrop-blur-md flex items-center justify-center p-4">
-    <div class="bg-[#0b0518] border-2 border-amber-400 rounded-2xl max-w-md w-full p-5 relative shadow-2xl">
-      <button onclick="closeCustomPinModal()" class="absolute top-4 right-4 text-slate-400 hover:text-white p-1">
-        <i data-lucide="x" class="w-5 h-5"></i>
-      </button>
-
-      <div class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-amber-500/20 border border-amber-400/40 text-amber-300 text-[11px] font-display font-extrabold uppercase mb-2">
-        📌 SUBMIT COMMUNITY DISCOVERY (10-GAMER VERIFICATION)
-      </div>
-      <h3 class="font-display text-lg font-black text-white">Submit New Map Spot for Verification</h3>
-      <p id="customPinCoordsLabel" class="text-xs font-mono text-cyan-300 mt-0.5">Coordinates: X: 1400, Y: 750</p>
-      <p class="text-[11px] text-amber-300/90 mt-1 bg-amber-500/10 border border-amber-500/30 rounded-lg px-2.5 py-1">
-        🗳 <strong>Community Rule:</strong> New submissions start at <strong>1/10 Verifications</strong>. Once <strong>10 Gamers</strong> verify your spot, it is permanently promoted to the official Leonida Explorer Map!
-      </p>
-
-      <div class="mt-3 space-y-2.5">
-        <div>
-          <label class="text-[10px] font-display font-bold uppercase text-slate-400">Pin Title</label>
-          <input id="customPinTitleInput" type="text" placeholder="e.g. Secret Alley Supercar Spawn / Roof Stash" class="mt-1 w-full bg-slate-950 border border-pink-500/40 rounded-xl px-3 py-2 text-xs text-white focus:outline-none focus:border-cyan-400" />
-        </div>
-
-        <div>
-          <label class="text-[10px] font-display font-bold uppercase text-slate-400">Pin Icon & Category</label>
-          <div class="mt-1 grid grid-cols-3 gap-1.5" id="customPinIconPicker">
-            <button type="button" onclick="selectCustomPinType('📌', '#fde047', 'Custom Secret')" class="custom-type-btn p-2 rounded-xl bg-slate-900 border-2 border-amber-400 text-xs font-bold text-white flex items-center justify-center gap-1">📌 Secret</button>
-            <button type="button" onclick="selectCustomPinType('💵', '#10b981', 'Cash Stash')" class="custom-type-btn p-2 rounded-xl bg-slate-900 border border-slate-800 text-xs font-bold text-white flex items-center justify-center gap-1">💵 Stash</button>
-            <button type="button" onclick="selectCustomPinType('🏎', '#00f0ff', 'Exotic Spawn')" class="custom-type-btn p-2 rounded-xl bg-slate-900 border border-slate-800 text-xs font-bold text-white flex items-center justify-center gap-1">🏎 Ride</button>
-            <button type="button" onclick="selectCustomPinType('🛸', '#ff2a85', 'Mystery / Lore')" class="custom-type-btn p-2 rounded-xl bg-slate-900 border border-slate-800 text-xs font-bold text-white flex items-center justify-center gap-1">🛸 Mystery</button>
-            <button type="button" onclick="selectCustomPinType('🐊', '#34d399', 'Wildlife Spot')" class="custom-type-btn p-2 rounded-xl bg-slate-900 border border-slate-800 text-xs font-bold text-white flex items-center justify-center gap-1">🐊 Gator</button>
-            <button type="button" onclick="selectCustomPinType('🏠', '#a855f7', 'Safe Hideout')" class="custom-type-btn p-2 rounded-xl bg-slate-900 border border-slate-800 text-xs font-bold text-white flex items-center justify-center gap-1">🏠 Hideout</button>
-          </div>
-        </div>
-
-        <div>
-          <label class="text-[10px] font-display font-bold uppercase text-slate-400">Hint / ViceFeed Caption</label>
-          <textarea id="customPinNoteInput" rows="2" placeholder="Describe how to reach this spot or what spawns here..." class="mt-1 w-full bg-slate-950 border border-pink-500/40 rounded-xl px-3 py-2 text-xs text-white focus:outline-none focus:border-cyan-400"></textarea>
-        </div>
-
-        <div class="flex items-center gap-2 pt-1">
-          <button onclick="saveCustomPinFromModal()" class="flex-1 py-2.5 rounded-xl vice-retro-btn text-white font-display font-black text-xs">
-            📌 DROP PIN & POST TO VICEFEED
-          </button>
-          <button onclick="clearAllCustomPins()" class="py-2.5 px-3 rounded-xl bg-slate-900 hover:bg-rose-950/60 border border-rose-500/30 text-rose-300 text-xs font-bold" title="Clear All Custom Pins">
-            Clear All
-          </button>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <!-- ====================================================================== -->
   <!-- LEONIDA SOCIAL VICEFEED CARDS DRAWER (IN-GAME SNAPMATIC / SOCIAL FEED) -->
   <!-- ====================================================================== -->
   <div id="viceFeedDrawer" class="hidden fixed inset-y-14 right-0 z-40 w-full sm:w-96 bg-[#090414]/98 backdrop-blur-2xl border-l-2 border-pink-500 flex flex-col shadow-2xl">
@@ -757,12 +699,9 @@
           <span class="font-display font-black text-sm text-white tracking-wider">📱 LEONIDA <span class="vice-text-gradient">VICEFEED</span></span>
           <span class="text-[9px] font-extrabold uppercase px-1.5 py-0.5 rounded bg-cyan-500/20 text-cyan-300 border border-cyan-500/40">LIVE</span>
         </div>
-        <p class="text-[10px] text-slate-400">Viral GTA 6 Spot Cards, Snapmatic Clues & Your Custom Pins</p>
+        <p class="text-[10px] text-slate-400">Viral GTA 6 Spot Cards & Snapmatic Clues Across Leonida</p>
       </div>
       <div class="flex items-center gap-1.5">
-        <button onclick="togglePinDropMode(); toggleViceFeedDrawer(false);" class="px-2.5 py-1 rounded-lg bg-amber-400 text-slate-950 font-display font-black text-[10px]">
-          + Drop Pin
-        </button>
         <button onclick="toggleViceFeedDrawer(false)" class="p-1 text-slate-400 hover:text-white">
           <i data-lucide="x" class="w-5 h-5"></i>
         </button>
@@ -772,7 +711,6 @@
     <!-- Filter Feed Tabs -->
     <div class="px-3 py-2 border-b border-pink-500/20 flex items-center gap-1.5 overflow-x-auto no-scrollbar">
       <button onclick="filterViceFeed('all')" id="feedTab_all" class="px-2.5 py-1 rounded-lg bg-pink-600 text-white text-[10px] font-extrabold">🔥 All Feed</button>
-      <button onclick="filterViceFeed('custom')" id="feedTab_custom" class="px-2.5 py-1 rounded-lg bg-slate-900 text-amber-300 border border-amber-400/40 text-[10px] font-extrabold">🗳 Verify Queue (10 Gamers)</button>
       <button onclick="filterViceFeed('secrets')" id="feedTab_secrets" class="px-2.5 py-1 rounded-lg bg-slate-900 text-cyan-300 border border-cyan-400/40 text-[10px] font-extrabold">🛸 UFOs & Mysteries</button>
       <button onclick="filterViceFeed('heists')" id="feedTab_heists" class="px-2.5 py-1 rounded-lg bg-slate-900 text-emerald-300 border border-emerald-400/40 text-[10px] font-extrabold">💎 Heists & Cash</button>
     </div>
@@ -877,11 +815,11 @@
           </div>
           <div class="p-2 rounded-xl bg-black/45 border border-white/10">
             <div class="text-[9px] text-slate-400 uppercase font-bold">Secrets Found</div>
-            <div id="statCardSecrets" class="font-display font-black text-sm text-amber-300">0/34</div>
+            <div id="statCardSecrets" class="font-display font-black text-sm text-amber-300">0/42</div>
           </div>
           <div class="p-2 rounded-xl bg-black/45 border border-white/10">
-            <div class="text-[9px] text-slate-400 uppercase font-bold">Custom Pins</div>
-            <div id="statCardCustom" class="font-display font-black text-sm text-pink-300">0</div>
+            <div class="text-[9px] text-slate-400 uppercase font-bold">Discovered</div>
+            <div id="statCardCustom" class="font-display font-black text-sm text-pink-300">0/125</div>
           </div>
         </div>
       </div>
@@ -1272,7 +1210,34 @@
       { id: 97, title: "North Vice Expressway Runway Drag Strip", cat: "vehicle", x: 1215, y: 1685, region: "North Vice Coast", hint: "Northern metropolitan airfield and highway strip spawning high-end sports cars." },
       { id: 98, title: "Northern Barrier Spit Golden Beach Collectible", cat: "hiddenpkg", x: 1385, y: 1885, region: "North Vice Coast", hint: "Located along the curving golden sand barrier spit at the far northern tip of the island." },
       { id: 99, title: "North Lagoon Marina Yacht & Jet-Ski Dock", cat: "easteregg", x: 1345, y: 1795, region: "North Vice Coast", hint: "Protected turquoise northern lagoon enclosed by the outer barrier beach spit." },
-      { id: 100, title: "Kalaga Canyon Ridge Sniper Overlook", cat: "weapon", x: 785, y: 1485, region: "Mount Kalaga", hint: "High-powered hunting rifle resting at the eastern mountain pass lookout." }
+      { id: 100, title: "Kalaga Canyon Ridge Sniper Overlook", cat: "weapon", x: 785, y: 1485, region: "Mount Kalaga", hint: "High-powered hunting rifle resting at the eastern mountain pass lookout." },
+
+      // ================= 11. NEWLY SCRAPED GTA 6 LANDMARKS, SAFEHOUSES & BUSINESSES (25 Confirmed Spots) =================
+      { id: 101, title: "Lucia's Bayside City Apartment Safehouse", cat: "safehouse", x: 1325, y: 1030, region: "Downtown Vice", hint: "Confirmed GTA 6 primary Vice City apartment in the Bayside district with wardrobe and garage access." },
+      { id: 102, title: "Sahara Arena Waterfront Stadium (Vice City Narcos)", cat: "easteregg", x: 1340, y: 970, region: "Downtown Vice", hint: "Massive Downtown Vice City bayfront sports and concert arena—home of the Vice City Narcos and a WAiNK scannable landmark." },
+      { id: 103, title: "Megamundo TV Network Headquarters Tower", cat: "hiddenpkg", x: 1305, y: 995, region: "Downtown Vice", hint: "Confirmed monolithic corporate broadcast headquarters along Catalan Boulevard with a rooftop helipad collectible." },
+      { id: 104, title: "Effluvia Sky-Lounge Rooftop Bar & Safe", cat: "heist", x: 1275, y: 950, region: "Downtown Vice", hint: "Swanky high-rise rooftop cocktail lounge overlooking the Vice City skyline with a VIP manager's safe." },
+      { id: 105, title: "Only Raw Records Studio (Boobie Ike & Dre'Quan)", cat: "easteregg", x: 1220, y: 1035, region: "Downtown Vice", hint: "Confirmed Vice City hip-hop recording label headquarters run by Boobie Ike and Dre'Quan Priest." },
+      { id: 106, title: "Diamond Dawgs Quality Jewels & Watches Heist", cat: "heist", x: 1288, y: 920, region: "Downtown Vice", hint: "High-end Vice City luxury jewelry and watch showroom primed for smash-and-grab display case robberies." },
+      { id: 107, title: "Tisha-Wocka Flea Market Bootleg Bazar Stash", cat: "stash", x: 1175, y: 1110, region: "Little Haiti", hint: "Bustling open-air market selling knock-off brands and hiding a smuggler cash lockbox behind the electronics stall." },
+      { id: 108, title: "Galina Ballet Opera House & Palaestra Tower", cat: "hiddenpkg", x: 1312, y: 1015, region: "Downtown Vice", hint: "Confirmed Catalan Boulevard performing arts landmark with a WAiNK Downtown Periscope sculpture out front." },
+      { id: 109, title: "Delights Cabaret Neon Lounge & Backroom", cat: "heist", x: 1245, y: 895, region: "Little Cuba", hint: "Confirmed late-night Vice City cabaret club featuring a cash-counting office behind the stage." },
+      { id: 110, title: "Hoodwinks Liquor Bar & Alleyway Stash", cat: "stash", x: 1195, y: 1075, region: "Little Haiti", hint: "Neighborhood dive bar and liquor storefront with a hidden cash drop box in the rear loading alley." },
+      { id: 111, title: "Leaf Links Golf Club Island & Country Club Cart", cat: "vehicle", x: 1505, y: 995, region: "Venetian Islands", hint: "Returning Vice City island golf club featuring custom high-speed golf carts and a pro-shop trophy collectible." },
+      { id: 112, title: "Washington Beach Pastel Art Deco Strip & Zeke's Gadgets", cat: "stash", x: 1600, y: 840, region: "Vice Beach", hint: "Iconic Washington Beach retail strip featuring Zeke's Gadgets electronics store and an ATM cash register." },
+      { id: 113, title: "Aqua Stadium Marine Amphitheater Jump", cat: "stunt", x: 1375, y: 780, region: "Starfish Island", hint: "Confirmed WAiNK landmark—launch a speedboat or jet-ski off the flooded concrete amphitheater wake ramp." },
+      { id: 114, title: "Vice City Welcome Sign (West Vice-Dale County)", cat: "easteregg", x: 1035, y: 935, region: "VIA Airport", hint: "Iconic glowing 'VICE CITY' highway welcome monument in West Vice-Dale County—official WAiNK scannable landmark." },
+      { id: 115, title: "Fleeca Field & Courtland Park Stadium", cat: "rampage", x: 1150, y: 1040, region: "Downtown Vice", hint: "Major Vice-Dale County sports stadium complex hosting parking-lot drift meets and stunt challenges." },
+      { id: 116, title: "Jason's Key Lento Stilt House (Brian Heder's Property)", cat: "safehouse", x: 1020, y: 250, region: "Leonida Keys", hint: "Confirmed early-game safehouse in Key Lento where Jason stays rent-free on Brian Heder's waterfront dock property." },
+      { id: 117, title: "The Rusty Anchor Keys Dive Bar Brawl & Safe", cat: "heist", x: 650, y: 215, region: "Leonida Keys", hint: "Confirmed lively island dive bar in the Leonida Keys with a back-bar wall safe and waterfront speedboat slip." },
+      { id: 118, title: "Riquezas Keys Military Radome & Bobcat Key Home", cat: "easteregg", x: 480, y: 175, region: "Leonida Keys", hint: "Confirmed WAiNK scannable geodesic radar dome and experimental mid-century stilt home in the lower Keys." },
+      { id: 119, title: "Belpoint Lighthouse & St. Lucia Coastal Beacon", cat: "hiddenpkg", x: 1290, y: 590, region: "Vice Port", hint: "Historic southern coastal lighthouse point—climb to the lantern gallery catwalk for a WAiNK scan and collectible." },
+      { id: 120, title: "Starlet Motel Hideout & Gellhorn Fun Fair Ferris Wheel", cat: "easteregg", x: 595, y: 940, region: "Port Gellhorn", hint: "Confirmed Kelly County roadside Starlet Motel and the coastal Gellhorn Fun Fair pier WAiNK landmark." },
+      { id: 121, title: "Emerald Springs Sky Ride Cable Car & Kingpin Bowling", cat: "weapon", x: 670, y: 1020, region: "Port Gellhorn", hint: "Kelly County attraction complex hiding the rare Gutterball Moreland 850 Shotgun inside Kingpin Bowling." },
+      { id: 122, title: "Sunrise RV Park & Manatee Motel Gang Stash", cat: "weapon", x: 730, y: 890, region: "Port Gellhorn", hint: "Raid the rival trailer park office and motel rooftop to unlock the Akulus Revolver and Laird 350 Sniper Rifle." },
+      { id: 123, title: "Old Goliath Giant Tree & Tucker's Citrus Water Tower", cat: "easteregg", x: 810, y: 1180, region: "Ambrosia", hint: "Confirmed WAiNK landmarks in northwestern Ambrosia alongside Howe Dairy Farm's Big Udder roadside statue." },
+      { id: 124, title: "Pelican Valley Observation Tower & Kingfishers Shack", cat: "weapon", x: 935, y: 540, region: "Grassrivers", hint: "Climb the wetland observation deck and raid the nearby Kingfishers fishing shack for the W-22 Small Game Rifle." },
+      { id: 125, title: "Hoffman Observatory, Outlaw's Cabin & Wild Hog Radar", cat: "hiddenpkg", x: 640, y: 1510, region: "Mount Kalaga", hint: "Confirmed Mount Kalaga National Park high-altitude dome observatory, outlaw cabin, and WAiNK Kalaga Lookout." }
     ];
 
     // ============================================================================
@@ -1527,23 +1492,9 @@
           handleGuessrMapClick(e.latlng);
           return;
         }
-        if (pinDropModeActive) {
-          const x = Math.round(e.latlng.lng);
-          const y = Math.round(e.latlng.lat);
-          openCustomPinModal(x, y);
-        }
-      });
-
-      // Right-click / Mobile Long-press anywhere on map to open Custom Pin Dropper Modal
-      map.on('contextmenu', (e) => {
-        if (state.mode === 'guessr') return;
-        const x = Math.round(e.latlng.lng);
-        const y = Math.round(e.latlng.lat);
-        openCustomPinModal(x, y);
       });
 
       renderMapMarkers();
-      renderCustomUserPins();
       updateGpsDisplay();
     }
 
@@ -2309,7 +2260,7 @@
     }
 
     // ============================================================================
-    // 12. IN-GAME LEONIDA CLOCK, CUSTOM PIN DROPPER & LEONIDA VICEFEED CARDS
+    // 12. IN-GAME LEONIDA CLOCK & LEONIDA VICEFEED CARDS
     // ============================================================================
     const LEONIDA_TIMES = [
       { label: "🌅 19:45 • LEONIDA SUNSET", isMidnight: false },
@@ -2318,68 +2269,8 @@
       { label: "☀️ 12:30 PM • TROPICAL SUN", isMidnight: false },
       { label: "⛈ 22:15 PM • HURRICANE NEON", isMidnight: false }
     ];
-    const REQUIRED_VERIFICATIONS = 10;
-    const DEFAULT_COMMUNITY_SUBMISSIONS = [
-      {
-        id: 901,
-        x: 1595,
-        y: 880,
-        title: "Ocean Drive Hotel Dixon Alley Custom Cheetah Spawn",
-        note: "Confirmed custom widebody Cheetah Classic parked behind the Hotel Dixon valet service entrance.",
-        icon: "🏎",
-        color: "#00f0ff",
-        category: "Vehicle Spawns",
-        catKey: "vehicle",
-        region: "Vice Beach",
-        submittedBy: "@ViceDrifter305",
-        verifications: 9,
-        verified: false,
-        completed: false
-      },
-      {
-        id: 902,
-        x: 1245,
-        y: 995,
-        title: "Downtown Metrorail Station Platform Security Lockbox",
-        note: "Cash drop box inside the elevated Vice City Metrorail ticket booth ($45,000).",
-        icon: "💵",
-        color: "#10b981",
-        category: "Cash & Lockboxes",
-        catKey: "stash",
-        region: "Downtown Vice",
-        submittedBy: "@LuciaMain_VI",
-        verifications: 8,
-        verified: false,
-        completed: false
-      },
-      {
-        id: 903,
-        x: 955,
-        y: 515,
-        title: "Grassrivers Mangrove Airboat Smuggler Cache",
-        note: "Hidden weapons and cash crate chained under the wooden airboat dock in the Grassrivers wetlands.",
-        icon: "🌴",
-        color: "#ff2a85",
-        category: "World Events",
-        catKey: "easteregg",
-        region: "Grassrivers",
-        submittedBy: "@GatorKing_Leonida",
-        verifications: 6,
-        verified: false,
-        completed: false
-      }
-    ];
 
     let leonidaTimeIdx = 0;
-    let customPins = JSON.parse(localStorage.getItem('viceroute_custom_pins') || 'null');
-    if (!customPins || customPins.length === 0) {
-      customPins = DEFAULT_COMMUNITY_SUBMISSIONS;
-      localStorage.setItem('viceroute_custom_pins', JSON.stringify(customPins));
-    }
-    let customMarkers = [];
-    let pinDropModeActive = false;
-    let pendingPinCoords = { x: 1400, y: 750 };
-    let selectedPinType = { icon: '📌', color: '#fde047', category: 'Custom Secret' };
     let currentFeedFilter = 'all';
     let feedLikes = JSON.parse(localStorage.getItem('viceroute_feed_likes') || '{}');
 
@@ -2405,211 +2296,6 @@
       }
     }
 
-    function togglePinDropMode(forceState) {
-      playSfx('blip');
-      pinDropModeActive = typeof forceState === 'boolean' ? forceState : !pinDropModeActive;
-      const btn = document.getElementById('btnDropPinMode');
-      const mapEl = document.getElementById('map');
-      if (pinDropModeActive) {
-        if (btn) {
-          btn.className = "shrink-0 px-3 py-1.5 rounded-xl bg-amber-400 text-slate-950 text-[11px] font-display font-black flex items-center gap-1 shadow-lg shadow-amber-400/40 animate-pulse";
-          btn.innerHTML = "<span>🎯 TAP MAP TO DROP PIN (ESC)</span>";
-        }
-        if (mapEl) mapEl.style.cursor = "crosshair";
-        showToast("📌 Pin Dropper Active: Tap any spot on the Leonida map to drop a custom pin!");
-      } else {
-        if (btn) {
-          btn.className = "shrink-0 px-2.5 py-1.5 rounded-xl bg-slate-950/95 backdrop-blur-md border border-amber-400/70 text-[11px] font-display font-extrabold text-amber-300 flex items-center gap-1 shadow-lg active:scale-95 transition";
-          btn.innerHTML = "<span>📌 DROP PIN</span>";
-        }
-        if (mapEl) mapEl.style.cursor = "";
-      }
-    }
-
-    function openCustomPinModal(x, y) {
-      playSfx('secret');
-      pendingPinCoords = { x, y };
-      document.getElementById('customPinCoordsLabel').textContent = `Coordinates: X: ${x}, Y: ${y}`;
-      document.getElementById('customPinTitleInput').value = '';
-      document.getElementById('customPinNoteInput').value = '';
-      document.getElementById('customPinModal').classList.remove('hidden');
-      togglePinDropMode(false);
-    }
-
-    function closeCustomPinModal() {
-      document.getElementById('customPinModal').classList.add('hidden');
-    }
-
-    function selectCustomPinType(icon, color, category) {
-      playSfx('blip');
-      selectedPinType = { icon, color, category };
-      const buttons = document.querySelectorAll('#customPinIconPicker .custom-type-btn');
-      buttons.forEach(b => {
-        if (b.textContent.includes(icon)) {
-          b.className = "custom-type-btn p-2 rounded-xl bg-slate-900 border-2 border-amber-400 text-xs font-bold text-white flex items-center justify-center gap-1 shadow-lg";
-        } else {
-          b.className = "custom-type-btn p-2 rounded-xl bg-slate-900 border border-slate-800 text-xs font-bold text-slate-400 flex items-center justify-center gap-1";
-        }
-      });
-    }
-
-    function saveCustomPinFromModal() {
-      const titleInp = document.getElementById('customPinTitleInput').value.trim();
-      const noteInp = document.getElementById('customPinNoteInput').value.trim();
-      const pin = {
-        id: Date.now(),
-        x: pendingPinCoords.x,
-        y: pendingPinCoords.y,
-        title: titleInp || `${selectedPinType.category} #${customPins.length + 1}`,
-        note: noteInp || `Community discovery submitted at X:${pendingPinCoords.x}, Y:${pendingPinCoords.y}. Needs 10 gamer verifications.`,
-        icon: selectedPinType.icon,
-        color: selectedPinType.color,
-        category: selectedPinType.category,
-        catKey: 'easteregg',
-        region: "Community Spot",
-        submittedBy: "@You_LeonidaExplorer",
-        verifications: 1,
-        verified: false,
-        completed: false,
-        createdAt: "Just now"
-      };
-      customPins.unshift(pin);
-      localStorage.setItem('viceroute_custom_pins', JSON.stringify(customPins));
-      closeCustomPinModal();
-      renderCustomUserPins();
-      renderViceFeedCards();
-      playSfx('secret');
-      triggerMissionPassedBanner(`SUBMITTED (1/10 VERIFIED): ${pin.title}`);
-      showToast(`🗳 Submitted to Community Queue (1/10 Gamers Verified)! Needs 9 more to unlock on official map.`);
-    }
-
-    function verifyCommunityPin(id) {
-      const pin = customPins.find(p => p.id === id);
-      if (!pin) return;
-
-      pin.verifications = Math.min(REQUIRED_VERIFICATIONS, (pin.verifications || 1) + 1);
-
-      if (pin.verifications >= REQUIRED_VERIFICATIONS && !pin.verified) {
-        pin.verified = true;
-        // Promote to official LOCATIONS list so it shows up in the main checklist & route optimizer!
-        const newOfficialId = LOCATIONS.length + 1;
-        pin.officialId = newOfficialId;
-        LOCATIONS.push({
-          id: newOfficialId,
-          title: `${pin.title} [✅ 10/10 Community Verified]`,
-          cat: pin.catKey || 'easteregg',
-          x: pin.x,
-          y: pin.y,
-          region: pin.region || 'Community Verified',
-          hint: pin.note
-        });
-        playSfx('missionPassed');
-        triggerMissionPassedBanner(`✅ 10/10 GAMERS VERIFIED! ADDED TO OFFICIAL MAP!`);
-        showToast(`🏆 "${pin.title}" reached 10/10 Gamer Verifications and is now officially added to the Leonida Map!`);
-        renderCategoryFilters();
-        renderMapMarkers();
-        renderLocationList();
-      } else {
-        playSfx('cash');
-        showToast(`👍 Verified! (${pin.verifications}/${REQUIRED_VERIFICATIONS} Gamers Verified — ${REQUIRED_VERIFICATIONS - pin.verifications} more needed)`);
-      }
-
-      localStorage.setItem('viceroute_custom_pins', JSON.stringify(customPins));
-      renderCustomUserPins();
-      renderViceFeedCards();
-    }
-
-    function renderCustomUserPins() {
-      customMarkers.forEach(m => map.removeLayer(m));
-      customMarkers = [];
-      customPins.forEach(pin => {
-        const isDone = !!pin.completed;
-        const vCount = pin.verifications || 1;
-        const isVerified = vCount >= REQUIRED_VERIFICATIONS || !!pin.verified;
-        const pct = Math.min(100, Math.round((vCount / REQUIRED_VERIFICATIONS) * 100));
-
-        const icon = L.divIcon({
-          className: '',
-          html: `<div class="custom-pin ${isDone ? 'pin-collected' : 'pin-secret-glow'}" style="width:32px;height:32px;background:${isVerified ? '#10b981' : (pin.color || '#fde047')};color:#070510;border-color:${isVerified ? '#00f0ff' : '#ffffff'};">
-                   ${isVerified ? '✅' : (pin.icon || '📌')}
-                 </div>`,
-          iconSize: [32, 32],
-          iconAnchor: [16, 16]
-        });
-        const m = L.marker([pin.y, pin.x], { icon }).addTo(map);
-        m.bindPopup(`
-          <div class="w-68">
-            <div class="flex items-center justify-between text-[10px] font-display font-extrabold uppercase mb-1">
-              <span class="${isVerified ? 'text-emerald-400' : 'text-amber-300'}">${pin.icon || '📌'} ${pin.category || 'COMMUNITY SPOT'}</span>
-              <span class="px-1.5 py-0.5 rounded ${isVerified ? 'bg-emerald-500/20 text-emerald-300 border border-emerald-400/50' : 'bg-amber-500/20 text-amber-300 border border-amber-400/50'}">
-                ${isVerified ? '✅ 10/10 VERIFIED' : `⏳ ${vCount}/10 VERIFIED`}
-              </span>
-            </div>
-            <div class="text-sm font-extrabold text-white mt-0.5">${pin.title}</div>
-            <p class="text-xs text-slate-300 mt-1">${pin.note || ''}</p>
-            <div class="text-[10px] text-pink-300 mt-1">Submitted by <strong>${pin.submittedBy || '@LeonidaGamer'}</strong></div>
-
-            <!-- 10-Gamer Verification Progress Bar -->
-            <div class="mt-2 p-2 rounded-xl bg-slate-950/90 border border-slate-800">
-              <div class="flex items-center justify-between text-[10px] font-bold mb-1">
-                <span class="${isVerified ? 'text-emerald-400' : 'text-amber-300'}">
-                  ${isVerified ? '✅ Officially Verified by 10+ Gamers' : `🗳 Needs ${REQUIRED_VERIFICATIONS - vCount} More Gamer Verifications`}
-                </span>
-                <span class="font-mono text-cyan-300">${vCount}/${REQUIRED_VERIFICATIONS}</span>
-              </div>
-              <div class="w-full h-2 rounded-full bg-slate-900 overflow-hidden">
-                <div class="h-full ${isVerified ? 'bg-emerald-400' : 'bg-amber-400'} transition-all duration-300" style="width:${pct}%"></div>
-              </div>
-            </div>
-
-            <div class="flex gap-1.5 mt-2.5">
-              ${!isVerified ? `
-                <button onclick="verifyCommunityPin(${pin.id})" class="flex-1 py-2 px-2.5 rounded-xl bg-amber-400 hover:bg-amber-300 text-slate-950 font-display font-black text-xs shadow-lg">
-                  👍 VERIFY (+1 GAMER)
-                </button>
-              ` : `
-                <button onclick="toggleCustomPinDone(${pin.id})" class="flex-1 py-2 px-2.5 rounded-xl font-display font-extrabold text-xs ${isDone ? 'bg-emerald-500 text-slate-950' : 'vice-retro-btn text-white'}">
-                  ${isDone ? '✓ DISCOVERED' : '☐ MARK DISCOVERED'}
-                </button>
-              `}
-              <button onclick="teleportGpsTo(${pin.x}, ${pin.y})" class="py-2 px-2.5 rounded-xl bg-slate-800 text-cyan-300 text-xs font-bold" title="Move GPS Here">📍</button>
-              <button onclick="deleteCustomPin(${pin.id})" class="py-2 px-2.5 rounded-xl bg-slate-800 hover:bg-rose-950 text-rose-400 text-xs font-bold" title="Remove">✕</button>
-            </div>
-          </div>
-        `);
-        customMarkers.push(m);
-      });
-    }
-
-    function toggleCustomPinDone(id) {
-      const pin = customPins.find(p => p.id === id);
-      if (!pin) return;
-      pin.completed = !pin.completed;
-      localStorage.setItem('viceroute_custom_pins', JSON.stringify(customPins));
-      playSfx(pin.completed ? 'cash' : 'blip');
-      renderCustomUserPins();
-      renderViceFeedCards();
-      showToast(pin.completed ? `✓ Checked off Custom Pin: ${pin.title}` : `Unchecked: ${pin.title}`);
-    }
-
-    function deleteCustomPin(id) {
-      playSfx('blip');
-      customPins = customPins.filter(p => p.id !== id);
-      localStorage.setItem('viceroute_custom_pins', JSON.stringify(customPins));
-      renderCustomUserPins();
-      renderViceFeedCards();
-      showToast("Custom pin removed.");
-    }
-
-    function clearAllCustomPins() {
-      customPins = [];
-      localStorage.setItem('viceroute_custom_pins', '[]');
-      renderCustomUserPins();
-      renderViceFeedCards();
-      closeCustomPinModal();
-      showToast("Cleared all custom pins.");
-    }
-
     // ============================================================================
     // 13. LEONIDA SOCIAL VICEFEED CARDS (SNAPMATIC / IN-GAME SOCIAL STREAM)
     // ============================================================================
@@ -2629,7 +2315,7 @@
     function filterViceFeed(tab) {
       playSfx('blip');
       currentFeedFilter = tab;
-      ['all', 'custom', 'secrets', 'heists'].forEach(t => {
+      ['all', 'secrets', 'heists'].forEach(t => {
         const el = document.getElementById(`feedTab_${t}`);
         if (!el) return;
         if (t === tab) {
@@ -2668,81 +2354,34 @@
 
       let cards = [];
 
-      // 1. Include community submissions & user's custom dropped pins at the top
-      if (currentFeedFilter === 'all' || currentFeedFilter === 'custom') {
-        customPins.forEach(pin => {
-          const vCount = pin.verifications || 1;
-          const isVerified = vCount >= REQUIRED_VERIFICATIONS || !!pin.verified;
-          cards.push({
-            key: `custom_${pin.id}`,
-            isCustom: true,
-            id: pin.id,
-            title: pin.title,
-            hint: pin.note,
-            region: pin.region || "Community Spot",
-            x: pin.x,
-            y: pin.y,
-            icon: pin.icon || '📌',
-            color: pin.color || '#fde047',
-            catName: pin.category || 'Community Spot',
-            reward: isVerified ? "✅ Official Map Spot" : `${vCount}/10 Verified`,
-            verifications: vCount,
-            isVerified,
-            creator: {
-              handle: pin.submittedBy || "@You_LeonidaExplorer",
-              badge: isVerified ? "✅ 10/10 VERIFIED" : `⏳ ${vCount}/10 VERIFIED`,
-              avatar: isVerified ? "✅" : "🗳",
-              comment: isVerified
-                ? "@ViceRouteMod: Verified by 10+ Leonida gamers and promoted to the official map!"
-                : `@ViceRouteMod: Needs ${REQUIRED_VERIFICATIONS - vCount} more gamer verifications to unlock on the official map.`
-            },
-            baseLikes: 120 + (pin.id % 90)
-          });
+      // Official Leonida spots as viral ViceFeed Cards
+      LOCATIONS.forEach(loc => {
+        const cat = CATEGORIES[loc.cat];
+        if (currentFeedFilter === 'secrets' && !cat.isSecret) return;
+        if (currentFeedFilter === 'heists' && loc.cat !== 'heist' && loc.cat !== 'stash') return;
+
+        const creator = NPC_CREATORS[loc.id % NPC_CREATORS.length];
+        cards.push({
+          key: `spot_${loc.id}`,
+          id: loc.id,
+          title: loc.title,
+          hint: loc.hint,
+          region: loc.region,
+          x: loc.x,
+          y: loc.y,
+          icon: cat.icon,
+          color: cat.color,
+          catName: cat.name,
+          reward: cat.reward,
+          creator,
+          baseLikes: 1400 + (loc.id * 317) % 8500
         });
-      }
-
-      // 2. Include official Leonida spots as viral ViceFeed Cards
-      if (currentFeedFilter !== 'custom') {
-        LOCATIONS.forEach(loc => {
-          const cat = CATEGORIES[loc.cat];
-          if (currentFeedFilter === 'secrets' && !cat.isSecret) return;
-          if (currentFeedFilter === 'heists' && loc.cat !== 'heist' && loc.cat !== 'stash') return;
-
-          const creator = NPC_CREATORS[loc.id % NPC_CREATORS.length];
-          cards.push({
-            key: `spot_${loc.id}`,
-            isCustom: false,
-            id: loc.id,
-            title: loc.title,
-            hint: loc.hint,
-            region: loc.region,
-            x: loc.x,
-            y: loc.y,
-            icon: cat.icon,
-            color: cat.color,
-            catName: cat.name,
-            reward: cat.reward,
-            creator,
-            baseLikes: 1400 + (loc.id * 317) % 8500
-          });
-        });
-      }
-
-      if (cards.length === 0) {
-        container.innerHTML = `
-          <div class="p-6 rounded-2xl bg-slate-900/80 border border-pink-500/30 text-center">
-            <div class="text-2xl mb-2">📌</div>
-            <div class="text-xs font-display font-bold text-white">No Custom Pins Yet</div>
-            <p class="text-[11px] text-slate-400 mt-1">Tap "+ Drop Pin" above or right-click anywhere on the map to create your own Leonida Feed Card!</p>
-          </div>
-        `;
-        return;
-      }
+      });
 
       cards.forEach(card => {
         const extraLikes = feedLikes[card.key] || 0;
         const totalLikes = card.baseLikes + extraLikes;
-        const isDone = !card.isCustom && state.collected.includes(card.id);
+        const isDone = state.collected.includes(card.id);
 
         const el = document.createElement('div');
         el.id = `feedCard_${card.key}`;
@@ -2775,7 +2414,7 @@
               </span>
             </div>
 
-            <h4 class="text-xs sm:text-sm font-black text-white leading-snug">${card.isCustom ? '' : '#' + card.id + ' '}${card.title}</h4>
+            <h4 class="text-xs sm:text-sm font-black text-white leading-snug">#${card.id} ${card.title}</h4>
             <p class="text-[11px] text-slate-300 mt-1 leading-relaxed">"${card.hint}"</p>
 
             <!-- Simulated In-Game Comment Box -->
@@ -2790,27 +2429,15 @@
               ❤️ <span>${totalLikes.toLocaleString()}</span>
             </button>
 
-            <button onclick="flyToFeedCardSpot(${card.x}, ${card.y}, ${card.isCustom ? 'null' : card.id})" class="flex-1 py-1.5 px-2.5 rounded-xl bg-cyan-500/20 hover:bg-cyan-500/30 border border-cyan-400/50 text-[11px] font-display font-extrabold text-cyan-300 transition">
+            <button onclick="flyToFeedCardSpot(${card.x}, ${card.y}, ${card.id})" class="flex-1 py-1.5 px-2.5 rounded-xl bg-cyan-500/20 hover:bg-cyan-500/30 border border-cyan-400/50 text-[11px] font-display font-extrabold text-cyan-300 transition">
               📍 Fly to Map
             </button>
 
-            ${card.isCustom ? `
-              ${!card.isVerified ? `
-                <button onclick="verifyCommunityPin(${card.id})" class="py-1.5 px-3 rounded-xl bg-amber-400 hover:bg-amber-300 text-slate-950 font-display font-black text-[11px] shadow">
-                  👍 Verify (${card.verifications}/10)
-                </button>
-              ` : `
-                <span class="py-1.5 px-2.5 rounded-xl bg-emerald-500/20 border border-emerald-400/50 text-emerald-300 font-display font-black text-[10px]">
-                  ✅ Official
-                </span>
-              `}
-            ` : `
-              <button onclick="toggleCollected(${card.id}); renderViceFeedCards();" class="py-1.5 px-2.5 rounded-xl font-display font-extrabold text-[11px] ${
-                isDone ? 'bg-emerald-500/25 text-emerald-300 border border-emerald-400/50' : 'vice-retro-btn text-white'
-              }">
-                ${isDone ? '✓ Done' : 'Collect'}
-              </button>
-            `}
+            <button onclick="toggleCollected(${card.id}); renderViceFeedCards();" class="py-1.5 px-2.5 rounded-xl font-display font-extrabold text-[11px] ${
+              isDone ? 'bg-emerald-500/25 text-emerald-300 border border-emerald-400/50' : 'vice-retro-btn text-white'
+            }">
+              ${isDone ? '✓ Done' : 'Collect'}
+            </button>
           </div>
         `;
         container.appendChild(el);
@@ -2967,15 +2594,18 @@
     function openKingpinStatsModal() {
       playSfx('chime');
       const count = state.collected.length;
+      const totalCount = LOCATIONS.length;
+      const pct = Math.round((count / totalCount) * 100);
+      const totalSecrets = LOCATIONS.filter(l => CATEGORIES[l.cat]?.isSecret).length;
       const secretsFound = state.collected.filter(id => {
         const loc = LOCATIONS.find(l => l.id === id);
         return loc && CATEGORIES[loc.cat]?.isSecret;
       }).length;
 
       document.getElementById('kingpinRankTitle').textContent = getKingpinRank(count);
-      document.getElementById('statCardPct').textContent = `${count}%`;
-      document.getElementById('statCardSecrets').textContent = `${secretsFound}/34`;
-      document.getElementById('statCardCustom').textContent = `${customPins.length}`;
+      document.getElementById('statCardPct').textContent = `${pct}%`;
+      document.getElementById('statCardSecrets').textContent = `${secretsFound}/${totalSecrets}`;
+      document.getElementById('statCardCustom').textContent = `${count}/${totalCount}`;
       document.getElementById('kingpinStatsModal').classList.remove('hidden');
     }
 
@@ -2986,8 +2616,9 @@
     function copyKingpinShareCard() {
       playSfx('missionPassed');
       const count = state.collected.length;
+      const totalCount = LOCATIONS.length;
       const cash = document.getElementById('gtaCashCounter')?.textContent || '$00050000';
-      const text = `🌴 VICEROUTE — STATE OF LEONIDA ID 🌴\nRank: ${getKingpinRank(count)}\nProgress: ${count}/100 Spots • Cash: ${cash}\nCustom Pins: ${customPins.length} • Tracked on ViceRoute`;
+      const text = `🌴 VICEROUTE — STATE OF LEONIDA ID 🌴\nRank: ${getKingpinRank(count)}\nProgress: ${count}/${totalCount} Spots • Cash: ${cash}\nTracked on ViceRoute`;
       navigator.clipboard?.writeText(text);
       showToast("👑 Kingpin Stats Card Copied to Clipboard!");
     }
@@ -2996,7 +2627,6 @@
       playSfx('blip');
       const payload = {
         collected: state.collected,
-        customPins,
         isPro: state.isPro,
         exportedAt: new Date().toISOString()
       };
@@ -3004,7 +2634,7 @@
       const url = URL.createObjectURL(blob);
       const a = document.createElement('a');
       a.href = url;
-      a.download = `viceroute-gta6-save-${state.collected.length}of100.json`;
+      a.download = `viceroute-gta6-save-${state.collected.length}of${LOCATIONS.length}.json`;
       a.click();
       URL.revokeObjectURL(url);
       showToast("⬇ Downloaded GTA 6 Save Backup JSON!");
@@ -3021,12 +2651,7 @@
             state.collected = data.collected;
             localStorage.setItem('viceroute_collected', JSON.stringify(state.collected));
           }
-          if (Array.isArray(data.customPins)) {
-            customPins = data.customPins;
-            localStorage.setItem('viceroute_custom_pins', JSON.stringify(customPins));
-          }
           renderMapMarkers();
-          renderCustomUserPins();
           renderLocationList();
           openKingpinStatsModal();
           playSfx('missionPassed');
@@ -3055,26 +2680,6 @@
     }
 
     window.addEventListener('DOMContentLoaded', () => {
-      // Restore any 10/10 community-verified spots into the official map dataset
-      customPins.forEach(pin => {
-        if ((pin.verifications || 0) >= REQUIRED_VERIFICATIONS || pin.verified) {
-          pin.verified = true;
-          const exists = LOCATIONS.some(l => l.x === pin.x && l.y === pin.y && l.title.includes(pin.title));
-          if (!exists) {
-            const newId = LOCATIONS.length + 1;
-            pin.officialId = newId;
-            LOCATIONS.push({
-              id: newId,
-              title: `${pin.title} [✅ 10/10 Community Verified]`,
-              cat: pin.catKey || 'easteregg',
-              x: pin.x,
-              y: pin.y,
-              region: pin.region || 'Community Verified',
-              hint: pin.note
-            });
-          }
-        }
-      });
       lucide.createIcons();
       renderCategoryFilters();
       initMap();
