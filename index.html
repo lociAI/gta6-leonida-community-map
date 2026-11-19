@@ -1640,18 +1640,21 @@
             <span class="text-emerald-400 font-bold">+${cat.reward}</span>
           </div>
           <div class="flex gap-1.5">
-            <button onclick="toggleCollected(${loc.id})" class="flex-1 py-2 px-2.5 rounded-xl font-display font-extrabold text-xs transition active:scale-95 ${
+            <button onclick="toggleCollected(${loc.id})" class="flex-1 py-2 px-2 rounded-xl font-display font-extrabold text-xs transition active:scale-95 ${
               isDone
                 ? 'bg-emerald-500 text-slate-950 shadow-lg shadow-emerald-500/30'
                 : 'vice-retro-btn text-white'
             }">
-              ${isDone ? '✓ DISCOVERED (UNDO)' : '☐ MARK DISCOVERED'}
+              ${isDone ? '✓ DISCOVERED' : '☐ MARK DONE'}
             </button>
-            <button onclick="openFeedCardForSpot(${loc.id})" class="py-2 px-2.5 rounded-xl bg-pink-500/20 hover:bg-pink-500/35 text-xs font-bold text-pink-300 border border-pink-500/50" title="Open Leonida ViceFeed Card">
-              📱 Feed
+            <button onclick="shareSpotLink(${loc.id})" class="py-2 px-2.5 rounded-xl bg-amber-400/20 hover:bg-amber-400/35 text-xs font-extrabold text-amber-300 border border-amber-400/60" title="Copy & Share Direct Map Link to This Spot">
+              🔗 Share
             </button>
-            <button onclick="teleportGpsTo(${loc.x}, ${loc.y})" class="py-2 px-2.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-xs font-bold text-cyan-300 border border-cyan-500/40" title="Set Console GPS Here">
-              📍 GPS
+            <button onclick="openFeedCardForSpot(${loc.id})" class="py-2 px-2 rounded-xl bg-pink-500/20 hover:bg-pink-500/35 text-xs font-bold text-pink-300 border border-pink-500/50" title="Open Leonida ViceFeed Card">
+              📱
+            </button>
+            <button onclick="teleportGpsTo(${loc.x}, ${loc.y})" class="py-2 px-2 rounded-xl bg-slate-800 hover:bg-slate-700 text-xs font-bold text-cyan-300 border border-cyan-500/40" title="Set Console GPS Here">
+              📍
             </button>
           </div>
         </div>
@@ -1707,11 +1710,16 @@
                 </div>
               </div>
             </div>
-            <button onclick="toggleCollected(${loc.id})" title="Check off this spot as discovered" class="px-2.5 h-7 rounded-xl border flex items-center justify-center gap-1 shrink-0 text-[10px] font-display font-extrabold transition active:scale-95 ${
-              isDone
-                ? 'bg-emerald-400 border-emerald-300 text-slate-950 font-black shadow shadow-emerald-400/30'
-                : 'bg-slate-950 border-pink-500/50 hover:border-cyan-400 text-slate-300'
-            }">${isDone ? '✓ DONE' : '☐ CHECK'}</button>
+            <div class="flex items-center gap-1 shrink-0">
+              <button onclick="shareSpotLink(${loc.id})" title="Share exact map link & coordinates for this spot" class="px-2 h-7 rounded-xl bg-slate-950 border border-amber-400/40 hover:border-amber-300 text-amber-300 text-[10px] font-bold transition active:scale-95">
+                🔗
+              </button>
+              <button onclick="toggleCollected(${loc.id})" title="Check off this spot as discovered" class="px-2.5 h-7 rounded-xl border flex items-center justify-center gap-1 shrink-0 text-[10px] font-display font-extrabold transition active:scale-95 ${
+                isDone
+                  ? 'bg-emerald-400 border-emerald-300 text-slate-950 font-black shadow shadow-emerald-400/30'
+                  : 'bg-slate-950 border-pink-500/50 hover:border-cyan-400 text-slate-300'
+              }">${isDone ? '✓ DONE' : '☐ CHECK'}</button>
+            </div>
           `;
           list.appendChild(item);
         });
@@ -2328,6 +2336,10 @@
               📍 Fly to Map
             </button>
 
+            <button onclick="shareSpotLink(${card.id})" class="py-1.5 px-2.5 rounded-xl bg-amber-400/20 hover:bg-amber-400/35 border border-amber-400/50 text-[11px] font-display font-extrabold text-amber-300 transition" title="Share Direct Spot Link">
+              🔗 Share
+            </button>
+
             <button onclick="toggleCollected(${card.id}); renderViceFeedCards();" class="py-1.5 px-2.5 rounded-xl font-display font-extrabold text-[11px] ${
               isDone ? 'bg-emerald-500/25 text-emerald-300 border border-emerald-400/50' : 'vice-retro-btn text-white'
             }">
@@ -2346,6 +2358,72 @@
       if (spotId && markersById[spotId]) {
         setTimeout(() => markersById[spotId].openPopup(), 720);
       }
+    }
+
+    function shareSpotLink(spotId) {
+      playSfx('cash');
+      const loc = LOCATIONS.find(l => l.id === Number(spotId));
+      if (!loc) return;
+      const cat = CATEGORIES[loc.cat] || CATEGORIES.stash;
+
+      const url = new URL(window.location.href);
+      url.search = '';
+      url.searchParams.set('spot', loc.id);
+      const shareUrl = url.toString();
+
+      // Update address bar with ?spot=ID so the browser URL itself is also shareable
+      try {
+        window.history.replaceState({}, '', `?spot=${loc.id}`);
+      } catch (e) {}
+
+      const shareTitle = `GTA 6 Spot #${loc.id}: ${loc.title} (${loc.region})`;
+      const shareText = `🌴 GTA 6 Spot #${loc.id}: ${loc.title}\n📍 Region: ${loc.region} (Coordinates X:${loc.x}, Y:${loc.y})\n${cat.icon} Category: ${cat.name} (+${cat.reward})\n💡 Hint: ${loc.hint}\n🗺 Exact Pin on ViceRoute: ${shareUrl}`;
+
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(shareText).catch(() => {});
+      }
+
+      if (navigator.share) {
+        navigator.share({
+          title: shareTitle,
+          text: `🌴 GTA 6 Spot #${loc.id}: ${loc.title} (${loc.region} • X:${loc.x}, Y:${loc.y}) — ${loc.hint}`,
+          url: shareUrl
+        }).catch(() => {});
+      }
+
+      showToast(`🔗 Copied Spot #${loc.id} Link & Coordinates! Paste in Reddit, Discord, or X!`);
+    }
+
+    function handleDeepLinkParams() {
+      const params = new URLSearchParams(window.location.search);
+      const spotParam = params.get('spot');
+      if (!spotParam) return;
+
+      const spotId = Number(spotParam);
+      const loc = LOCATIONS.find(l => l.id === spotId);
+      if (!loc) return;
+
+      // Ensure the spot's category is enabled and not hidden by filters so the marker exists
+      if (!state.activeCats.includes(loc.cat)) {
+        state.activeCats.push(loc.cat);
+      }
+      state.secretsOnly = false;
+      state.completionFilter = 'all';
+      state.searchQuery = '';
+      renderCategoryFilters();
+      renderMapMarkers();
+      renderLocationList();
+
+      setTimeout(() => {
+        map.flyTo([loc.y, loc.x], 1.25, { duration: 0.9 });
+        setTimeout(() => {
+          if (markersById[loc.id]) {
+            markersById[loc.id].openPopup();
+          }
+          playSfx('secret');
+          showToast(`📍 Jumped to Shared Spot #${loc.id}: ${loc.title} (X:${loc.x}, Y:${loc.y})`);
+        }, 920);
+      }, 250);
     }
 
     // ============================================================================
@@ -2579,6 +2657,7 @@
       renderCategoryFilters();
       initMap();
       renderLocationList();
+      handleDeepLinkParams();
     });
   </script>
 </body>
