@@ -1996,7 +1996,9 @@
         const nextLoc = LOCATIONS.find(l => l.id === state.routeOrder[0]);
         if (nextLoc) {
           map.panTo([nextLoc.y, nextLoc.x]);
-          speakFeedback(`Next stop: ${nextLoc.title} in ${nextLoc.region}`);
+          if (state.voiceActive) {
+            speakFeedback(`Next stop: ${nextLoc.title} in ${nextLoc.region}`);
+          }
         }
       } else {
         clearRoute();
@@ -2029,7 +2031,7 @@
     let recognition = null;
 
     function speakFeedback(text) {
-      if (sfxMuted) return;
+      if (sfxMuted || !state.voiceActive) return;
       if ('speechSynthesis' in window) {
         window.speechSynthesis.cancel();
         const u = new SpeechSynthesisUtterance(text);
@@ -2038,43 +2040,98 @@
       }
     }
 
+    function updateVoiceButtonsUI() {
+      const btnDesktop = document.getElementById('btnVoiceDesktop');
+      const btnMobile = document.getElementById('btnVoiceMobile');
+      const labels = document.querySelectorAll('.voiceStatusText');
+
+      if (state.voiceActive) {
+        labels.forEach(el => el.textContent = "⏹ Stop Voice");
+        if (btnDesktop) {
+          btnDesktop.className = "py-1.5 px-2.5 rounded-xl font-extrabold text-xs bg-rose-600 hover:bg-rose-500 text-white border-2 border-white/80 flex items-center justify-center gap-1.5 shadow-lg shadow-rose-500/40 animate-pulse transition";
+        }
+        if (btnMobile) {
+          btnMobile.className = "flex flex-col items-center justify-center py-1 px-2 text-rose-400 bg-rose-950/60 rounded-xl border border-rose-500/60 active:scale-95 transition";
+        }
+      } else {
+        if (btnDesktop) {
+          btnDesktop.className = "py-1.5 px-2.5 rounded-xl font-bold text-xs bg-slate-900/90 hover:bg-slate-800 text-slate-200 border border-pink-500/30 flex items-center justify-center gap-1.5 transition";
+          const lbl = btnDesktop.querySelector('.voiceStatusText');
+          if (lbl) lbl.textContent = "Voice Co-Pilot";
+        }
+        if (btnMobile) {
+          btnMobile.className = "flex flex-col items-center justify-center py-1 px-2 text-slate-300 active:scale-95 transition";
+          const lbl = btnMobile.querySelector('.voiceStatusText');
+          if (lbl) lbl.textContent = "Voice GPS";
+        }
+      }
+    }
+
+    function stopVoiceAssistant(reasonMsg = "Voice Co-Pilot Stopped.") {
+      state.voiceActive = false;
+      if ('speechSynthesis' in window) {
+        try { window.speechSynthesis.cancel(); } catch (e) {}
+      }
+      if (recognition) {
+        try {
+          recognition.onresult = null;
+          recognition.onend = null;
+          recognition.onerror = null;
+          recognition.abort();
+          recognition.stop();
+        } catch (e) {}
+        recognition = null;
+      }
+      updateVoiceButtonsUI();
+      if (reasonMsg) showToast(reasonMsg);
+    }
+
     function toggleVoiceAssistant() {
       playSfx('blip');
-      const labels = document.querySelectorAll('.voiceStatusText');
       if (state.voiceActive) {
-        state.voiceActive = false;
-        if (recognition) recognition.stop();
-        labels.forEach(el => el.textContent = "Voice GPS");
-        showToast("Voice Co-Pilot Paused.");
+        stopVoiceAssistant("⏹ Voice Co-Pilot Stopped.");
         return;
       }
 
       state.voiceActive = true;
-      labels.forEach(el => el.textContent = "Listening...");
+      updateVoiceButtonsUI();
 
       if (state.routeOrder.length === 0) {
         generateOptimalRoute(true);
       }
       const firstLoc = LOCATIONS.find(l => l.id === state.routeOrder[0]);
       if (firstLoc) {
-        speakFeedback(`Vice Route Voice GPS Active. Drive to ${firstLoc.title}. Say Next when collected.`);
+        speakFeedback(`Vice Route Voice GPS Active. Drive to ${firstLoc.title}. Say Next when collected, or tap Stop Voice.`);
       }
 
       const SpeechRec = window.SpeechRecognition || window.webkitSpeechRecognition;
       if (SpeechRec) {
-        recognition = new SpeechRec();
-        recognition.continuous = true;
-        recognition.lang = 'en-US';
-        recognition.onresult = (event) => {
-          const transcript = event.results[event.results.length - 1][0].transcript.toLowerCase();
-          if (transcript.includes('next') || transcript.includes('got it') || transcript.includes('done')) {
-            markCurrentRouteStopDone();
-          }
-        };
-        recognition.start();
-        showToast("Voice Co-Pilot Active! Say 'Next' hands-free while playing.");
+        try {
+          recognition = new SpeechRec();
+          recognition.continuous = true;
+          recognition.lang = 'en-US';
+          recognition.onresult = (event) => {
+            if (!state.voiceActive) return;
+            const transcript = event.results[event.results.length - 1][0].transcript.toLowerCase();
+            if (transcript.includes('stop') || transcript.includes('cancel') || transcript.includes('pause')) {
+              stopVoiceAssistant("⏹ Voice Co-Pilot Stopped by voice command.");
+              return;
+            }
+            if (transcript.includes('next') || transcript.includes('got it') || transcript.includes('done')) {
+              markCurrentRouteStopDone();
+            }
+          };
+          recognition.onerror = () => {
+            // Keep state.voiceActive true for TTS audio callouts even if mic permission is denied,
+            // so pressing the button again always stops it cleanly.
+          };
+          recognition.start();
+          showToast("🎙 Voice Co-Pilot Active! Say 'Next' or tap '⏹ Stop Voice' to stop.");
+        } catch (err) {
+          showToast("🔊 Voice Audio Co-Pilot Active! Tap '⏹ Stop Voice' anytime to stop.");
+        }
       } else {
-        showToast("Voice Audio Callouts Active! Tap 'Collected -> Next Stop' for audio guidance.");
+        showToast("🔊 Voice Audio Co-Pilot Active! Tap '⏹ Stop Voice' anytime to stop.");
       }
     }
 
