@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://lociai.github.io/gta6-leonida-community-map/sitemap.xml
