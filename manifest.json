@@ -1,12 +1,13 @@
 {
-  "name": "ViceRoute — GTA 6 Full Leonida Map & Explorer Guide",
-  "short_name": "ViceRoute",
-  "description": "Full State of Leonida Interactive Map for GTA 6 with 100 Spots & Hidden Secrets, Retro Vice Synthwave Radio, Heist Planner & ViceGuessr.",
+  "name": "ViceRoute — Free Fan-Made GTA 6 State of Leonida Interactive Map",
+  "short_name": "ViceRoute GTA 6",
+  "description": "100% Free, Fan-Made, Open-Source GTA 6 Interactive Map of the State of Leonida & Vice City. Built by the worldwide community to track 125+ locations, collectibles, safehouses, heists & secrets together.",
   "start_url": "./index.html",
   "display": "standalone",
   "background_color": "#070510",
   "theme_color": "#ff2a85",
   "orientation": "any",
+  "categories": ["games", "entertainment", "navigation", "utilities"],
   "icons": [
     {
       "src": "data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='22' fill='%23120428' stroke='%23ff2a85' stroke-width='6'/><text x='50' y='66' font-family='sans-serif' font-size='48' font-weight='900' fill='%2300f0ff' text-anchor='middle'>VI</text></svg>",

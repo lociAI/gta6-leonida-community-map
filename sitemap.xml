@@ -1,9 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
+        xmlns:image="http://www.google.com/schemas/sitemap-image/1.1">
   <url>
     <loc>https://lociai.github.io/gta6-leonida-community-map/</loc>
-    <lastmod>2026-11-23</lastmod>
+    <lastmod>2026-11-24</lastmod>
     <changefreq>daily</changefreq>
     <priority>1.0</priority>
+    <image:image>
+      <image:loc>https://lociai.github.io/gta6-leonida-community-map/leonida-map.jpg</image:loc>
+      <image:title>ViceRoute — Free Fan-Made GTA 6 State of Leonida Interactive Map (125+ Confirmed Spots)</image:title>
+      <image:caption>Open-source, 100% free fan-made interactive map of the State of Leonida and Vice City for Grand Theft Auto VI, built together by the worldwide community.</image:caption>
+    </image:image>
   </url>
 </urlset>
